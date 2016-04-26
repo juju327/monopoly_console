@@ -10,22 +10,24 @@ namespace monopoly
             private set;
         }
 
-
         public int Argent
         {
             get;
             private set;
         }
+
         public int CaseActuelle
         {
             get;
             private set;
         }
+
         public int NbCarteLiberation
         {
             get;
             private set;
         }
+
         public int NbTourPrison
         {
             get;
@@ -38,15 +40,14 @@ namespace monopoly
             private set;
         }
 
-
-
-        public Joueur(string Nom)
+        public Joueur(string n)
         {
-            this.Nom = Nom;
-            //CaseActuelle = Plateau.Cases.get(0);
+            Nom = n;
+            CaseActuelle = 0;
             Argent = 1500;
             NbCarteLiberation = 0;
-
+            NbTourPrison = 0;
+            ListeProprietes = new List<CasePropriete>();
         }
 
 

@@ -9,7 +9,9 @@ namespace monopoly
     {
         static void Main(string[] args)
         {
-            // coucou
+            Partie partie = new Partie();
+
+            Console.ReadLine();
         }
     }
 }
