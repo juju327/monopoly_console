@@ -5,11 +5,7 @@ using System.Text;
 
 namespace monopoly
 {
-    class Program
+    class Banque
     {
-        static void Main(string[] args)
-        {
-            // coucou
-        }
     }
 }

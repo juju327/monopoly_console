@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using monopoly;
 
 namespace monopoly
 {
-    class Program
+    class Action
     {
-        static void Main(string[] args)
+        public Joueur Joueur
         {
-            // coucou
+            get;
+            private set;
         }
     }
 }

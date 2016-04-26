@@ -5,11 +5,8 @@ using System.Text;
 
 namespace monopoly
 {
-    class Program
+    class Gare : CasePropriete
     {
-        static void Main(string[] args)
-        {
-            // coucou
-        }
+
     }
 }

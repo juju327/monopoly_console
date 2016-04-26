@@ -5,11 +5,12 @@ using System.Text;
 
 namespace monopoly
 {
-    class Program
+    class CaseSpeciale : CasePlateau
     {
-        static void Main(string[] args)
+        public Action ActionAEffectuer
         {
-            // coucou
+            get;
+            private set;
         }
     }
 }
