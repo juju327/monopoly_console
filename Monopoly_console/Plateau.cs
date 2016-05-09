@@ -110,7 +110,7 @@ namespace monopoly
                         }
                         break;
                     case "pioche":
-                        c = new CaseSpeciale("", 0, new Action());
+                        c = new CaseSpeciale("", 0, new Action(null));
                         break;
                     case "gare":
                         c = new CasePropriete("", 0);

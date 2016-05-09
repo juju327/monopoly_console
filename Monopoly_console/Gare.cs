@@ -13,7 +13,7 @@ namespace monopoly
 
         }
 
-        public void serialiser(XElement racine)
+        public new void serialiser(XElement racine)
         {
             XElement gare = new XElement("case");
             XElement numero = new XElement("numero", Numero);
@@ -26,7 +26,7 @@ namespace monopoly
             racine.Add(gare);
         }
 
-        public Object deserialiser(XElement racine)
+        public new Object deserialiser(XElement racine)
         {
             return new Gare("", 0);
         }

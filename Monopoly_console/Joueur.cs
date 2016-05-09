@@ -51,22 +51,22 @@ namespace monopoly
         }
 
 
-        internal static void deplacerA(CasePlateau dest, bool passerParCaseDepart)
+        public void deplacerA(CasePlateau dest, bool passerParCaseDepart)
         {
             throw new System.NotImplementedException();
         }
 
-        internal static void deplacerDe(int nbCases)
+        public void deplacerDe(int nbCases)
         {
             throw new System.NotImplementedException();
         }
 
-        internal static void gagner(int Somme)
+        public void gagner(int Somme)
         {
             throw new System.NotImplementedException();
         }
 
-        internal static void perdre(int Somme)
+        public void perdre(int Somme)
         {
             throw new System.NotImplementedException();
         }

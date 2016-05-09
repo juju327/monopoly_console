@@ -11,12 +11,12 @@ namespace monopoly
         public Joueur JoueurBeneficiaire
         {
             get;
-            private set;
+            protected set;
         }
 
-        public Action()
+        public Action(Joueur j)
         {
-
+            JoueurBeneficiaire = j;
         }
     }
 }

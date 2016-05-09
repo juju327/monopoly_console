@@ -15,7 +15,9 @@ namespace monopoly
             private set;
         }
 
-        public ActionArgent(Boolean gagnerArgent)
+        
+
+        public ActionArgent(Boolean gagnerArgent, Joueur j) : base(j)
         {
             actionAFaire executer;
             if (gagnerArgent)

@@ -7,14 +7,17 @@ namespace monopoly
 {
     class ActionDeplacement : Action
     {
-        public ActionDeplacement(CasePlateau dest, bool passerParCaseDepart)
+        public ActionDeplacement(Joueur j, CasePlateau dest, bool passerParCaseDepart) : base (j)
         {
-            Joueur.deplacerA(dest, passerParCaseDepart);
+
+
+
+            JoueurBeneficiaire.deplacerA(dest, passerParCaseDepart);
         }
 
-        public ActionDeplacement(int nbCases)
+        public ActionDeplacement(Joueur j, int nbCases) : base(j)
         {
-            Joueur.deplacerDe(nbCases);
+            JoueurBeneficiaire.deplacerDe(nbCases);
         }
     }
 }
