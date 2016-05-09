@@ -5,7 +5,7 @@ using System.Text;
 
 namespace monopoly
 {
-    class Terrain : CasePropriete
+    class Terrain : CasePropriete, Serialisable
     {
         public Couleur Couleur
         {
@@ -40,6 +40,11 @@ namespace monopoly
         public override int calculeLoyer()
         {
             return base.calculeLoyer();
+        }
+
+        public Terrain(String n, int num) : base(n, num)
+        {
+
         }
     }
 

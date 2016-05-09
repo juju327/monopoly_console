@@ -8,10 +8,15 @@ namespace monopoly
 {
     class Action
     {
-        public Joueur Joueur
+        public Joueur JoueurBeneficiaire
         {
             get;
             private set;
+        }
+
+        public Action()
+        {
+
         }
     }
 }

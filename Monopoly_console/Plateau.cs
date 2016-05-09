@@ -5,10 +5,11 @@ using System.Text;
 using System.Xml;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Xml.Linq;
 
 namespace monopoly
 {
-    class Plateau
+    class Plateau : Serialisable
     {
         public List<CasePlateau> Cases
         {
@@ -22,6 +23,7 @@ namespace monopoly
             // remplit Cases avec les infos nécéssaires
 
             // reading
+            /*
             StringBuilder output = new StringBuilder();
 
             String xmlString =
@@ -66,10 +68,74 @@ namespace monopoly
                 }
             }
             Console.WriteLine(output.ToString());
+            */
+
+            XDocument xdoc = XDocument.Load("..\\..\\plateau.xml");
+
+            //Console.WriteLine(xdoc);
+
+            /*IEnumerable<CasePlateau> result = from c in xdoc.Descendants("plateau")
+                                              select new CasePlateau((string)c.Element("nom"), (int)c.Element("numero"))
+                                              {
+                                                  
+                                              };
+*/
 
 
+            //Run query
+            // on récupère tous les éléments case du document
+            var result = from e in xdoc.Descendants("plateau").Elements()
+                         select e;
+
+            //Chaque case va se désérialiser elle-même
+            foreach (XElement x in result)
+            {
+                CasePlateau c;
+                String typeCase = (String)x.Element("param").Attribute("type");
+                String spec = (String)x.Element("param").Attribute("spec");
+                switch (typeCase)
+                {
+                    case "propriete":
+                        switch (spec)
+                        {
+                            case "gare":
+                                c = new Gare("", 0);
+                                break;
+                            case "compagnie":
+                                c = new Compagnie("", 0);
+                                break;
+                            case "terrain":
+                                c = new Terrain("", 0);
+                                break;
+                        }
+                        break;
+                    case "pioche":
+                        c = new CaseSpeciale("", 0, new Action());
+                        break;
+                    case "gare":
+                        c = new CasePropriete("", 0);
+                        break;
+                    default:
+                        c = null;
+                        break;
+
+                }
+                Console.WriteLine(typeCase);
+                //Console.WriteLine(c);
+                //Result += String.Format("{0}\r\n", user);
+            }
 
 
+        }
+
+        public void serialiser(XElement racine)
+        {
+
+        }
+
+        public object deserialiser(XElement racine)
+        {
+            return null;
         }
     }
 }

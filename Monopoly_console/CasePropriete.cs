@@ -5,7 +5,7 @@ using System.Text;
 
 namespace monopoly
 {
-    class CasePropriete : CasePlateau
+    class CasePropriete : CasePlateau, Serialisable
     {
         public int PrixAchat
         {
@@ -29,6 +29,12 @@ namespace monopoly
         {
             return 0;
         }
+
+        public CasePropriete(String n, int num) : base(n, num)
+        {
+
+        }
+
 
     }
 }

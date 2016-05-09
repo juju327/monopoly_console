@@ -11,6 +11,8 @@ namespace monopoly
         {
             Partie partie = new Partie();
 
+            //partie.initJoueurs();
+
             Console.ReadLine();
         }
     }

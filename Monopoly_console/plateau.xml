@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plateau>
+  <case>
+    <numero>1</numero>
+    <param type="propriete" spec="terrain"/>
+    <nom>Boulevard de Belleville</nom>
+    <achat>60</achat>
+  </case>
+  <case>
+    <numero>2</numero>
+    <param type="pioche" spec="communaute"/>
+    <nom>Caisse de communauté</nom>
+  </case>
+  <case>
+    <numero>3</numero>
+    <param type="propriete" spec="gare"/>
+    <nom>Gare de Lyon</nom>
+  </case>
+</plateau>

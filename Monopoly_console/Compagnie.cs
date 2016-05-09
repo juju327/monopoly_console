@@ -5,7 +5,12 @@ using System.Text;
 
 namespace monopoly
 {
-    class Compagnie
+    class Compagnie : CasePropriete, Serialisable
     {
+        public Compagnie(String nom, int num) : base(nom, num)
+        {
+
+        }
+
     }
 }
