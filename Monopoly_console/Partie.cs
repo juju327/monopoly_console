@@ -48,14 +48,26 @@ namespace monopoly
 
         public void serialiser(XElement racine)
         {
-            XElement partie = new XElement("Partie");
             /*XElement nom = new XElement("Nom", Nom);
             XElement vole = new XElement("Vole", Vole);
             XElement tailleOeufs = new XElement("TailleOeufs", TailleOeufs);
             XElement pays = new XElement("Pays", Pays);
 
             partie.Add(nom, vole, tailleOeufs, pays);*/
+            
+            
+            
+            
+            XElement partie = new XElement("Partie");
+            // <Partie></Partie>
+
+            XElement partie2 = new XElement("Partie", "toto");
+            // <Partie>toto</Partie>
+            
             racine.Add(partie);
+            // <root>
+            // <partie></partie>
+            // </root>
         }
 
         public object deserialiser(XElement racine)

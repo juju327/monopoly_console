@@ -80,8 +80,11 @@ namespace monopoly
             // constants
             var result = from e in xdoc.Descendants("parametres").Elements()
                          select e;
+            
             XElement parametres = xdoc.Element("plateau").Element("parametres");
 
+            
+            
             // prix d'achat d'une gare
             int achatGare = (int)parametres.Element("gare").Element("achat");
 

@@ -188,14 +188,14 @@
         <param type="propriete" spec="terrain"/>
         <nom>Avenue Mozart</nom>
         <couleur>3</couleur>
-        <achat>160</achat>
+        <achat>180</achat>
         <loyer>
-          <loyer0>12</loyer0>
-          <loyer1>60</loyer1>
-          <loyer2>180</loyer2>
-          <loyer3>500</loyer3>
-          <loyer4>700</loyer4>
-          <loyer5>900</loyer5>
+          <loyer0>14</loyer0>
+          <loyer1>70</loyer1>
+          <loyer2>200</loyer2>
+          <loyer3>550</loyer3>
+          <loyer4>875</loyer4>
+          <loyer5>1050</loyer5>
         </loyer>
       </case>
       <case>
@@ -203,20 +203,147 @@
         <param type="pioche" spec="communaute"/>
       </case>
       <case>
-        <numero>16</numero>
+        <numero>18</numero>
         <param type="propriete" spec="terrain"/>
-        <nom>Avenue Mozart</nom>
+        <nom>Boulevard Saint-Michel</nom>
         <couleur>3</couleur>
-        <achat>160</achat>
+        <achat>180</achat>
         <loyer>
-          <loyer0>12</loyer0>
-          <loyer1>60</loyer1>
-          <loyer2>180</loyer2>
-          <loyer3>500</loyer3>
-          <loyer4>700</loyer4>
-          <loyer5>900</loyer5>
+          <loyer0>14</loyer0>
+          <loyer1>70</loyer1>
+          <loyer2>200</loyer2>
+          <loyer3>550</loyer3>
+          <loyer4>875</loyer4>
+          <loyer5>1050</loyer5>
         </loyer>
       </case>
+      <case>
+        <numero>19</numero>
+        <param type="propriete" spec="terrain"/>
+        <nom>Place Pigalle</nom>
+        <couleur>3</couleur>
+        <achat>200</achat>
+        <loyer>
+          <loyer0>16</loyer0>
+          <loyer1>80</loyer1>
+          <loyer2>220</loyer2>
+          <loyer3>600</loyer3>
+          <loyer4>800</loyer4>
+          <loyer5>1000</loyer5>
+        </loyer>
+      </case>
+      <case>
+        <numero>20</numero>
+        <param type="speciale" spec="argent"/>
+        <nom>Parc Gratuit</nom>
+      </case>
+      <case>
+        <numero>21</numero>
+        <param type="propriete" spec="terrain"/>
+        <nom>Avenue Matignon</nom>
+        <couleur>4</couleur>
+        <achat>220</achat>
+        <loyer>
+          <loyer0>18</loyer0>
+          <loyer1>90</loyer1>
+          <loyer2>250</loyer2>
+          <loyer3>700</loyer3>
+          <loyer4>875</loyer4>
+          <loyer5>1050</loyer5>
+        </loyer>
+      </case>
+      <case>
+        <numero>22</numero>
+        <param type="pioche" spec="chance"/>
+      </case>
+      <case>
+        <numero>23</numero>
+        <param type="propriete" spec="terrain"/>
+        <nom>Boulevard Malesherbes</nom>
+        <couleur>4</couleur>
+        <achat>220</achat>
+        <loyer>
+          <loyer0>18</loyer0>
+          <loyer1>90</loyer1>
+          <loyer2>250</loyer2>
+          <loyer3>700</loyer3>
+          <loyer4>875</loyer4>
+          <loyer5>1050</loyer5>
+        </loyer>
+      </case>
+      <case>
+        <numero>24</numero>
+        <param type="propriete" spec="terrain"/>
+        <nom>Avenue Henri-Martin</nom>
+        <couleur>4</couleur>
+        <achat>240</achat>
+        <loyer>
+          <loyer0>20</loyer0>
+          <loyer1>100</loyer1>
+          <loyer2>300</loyer2>
+          <loyer3>750</loyer3>
+          <loyer4>925</loyer4>
+          <loyer5>1100</loyer5>
+        </loyer>
+      </case>
+      <case>
+        <numero>25</numero>
+        <param type="propriete" spec="gare"/>
+        <nom>Gare du Nord</nom>
+      </case>
+      <case>
+        <numero>26</numero>
+        <param type="propriete" spec="terrain"/>
+        <nom>Faubourg Saint-Honoré</nom>
+        <couleur>5</couleur>
+        <achat>260</achat>
+        <loyer>
+          <loyer0>22</loyer0>
+          <loyer1>110</loyer1>
+          <loyer2>330</loyer2>
+          <loyer3>800</loyer3>
+          <loyer4>975</loyer4>
+          <loyer5>1150</loyer5>
+        </loyer>
+      </case>
+      <case>
+        <numero>27</numero>
+        <param type="propriete" spec="terrain"/>
+        <nom>Place de la bourse</nom>
+        <couleur>5</couleur>
+        <achat>260</achat>
+        <loyer>
+          <loyer0>22</loyer0>
+          <loyer1>110</loyer1>
+          <loyer2>330</loyer2>
+          <loyer3>800</loyer3>
+          <loyer4>975</loyer4>
+          <loyer5>1150</loyer5>
+        </loyer>
+      </case>
+      <case>
+        <numero>28</numero>
+        <param type="propriete" spec="compagnie"/>
+        <nom>Compagnie de Distribution d'Electricité</nom>
+      </case>
+      <!-- icicicicicicicic-->
+      <case>
+        <numero>29</numero>
+        <param type="propriete" spec="terrain"/>
+        <nom>Place de la bourse</nom>
+        <couleur>5</couleur>
+        <achat>260</achat>
+        <loyer>
+          <loyer0>22</loyer0>
+          <loyer1>110</loyer1>
+          <loyer2>330</loyer2>
+          <loyer3>800</loyer3>
+          <loyer4>975</loyer4>
+          <loyer5>1150</loyer5>
+        </loyer>
+      </case>
+
+
 
 
 
