@@ -8,9 +8,15 @@ namespace monopoly
 {
     class Gare : CasePropriete, Serialisable
     {
-        public Gare(String n, int num) : base(n, num)
+        public int[] Loyers
         {
+            get;
+            private set;
+        }
 
+        public Gare(String n, int num, int[] loyers) : base(n, num)
+        {
+            Loyers = loyers;
         }
 
         public new void serialiser(XElement racine)
@@ -28,7 +34,7 @@ namespace monopoly
 
         public new Object deserialiser(XElement racine)
         {
-            return new Gare("", 0);
+            return new Gare("", 0, new int[4]);
         }
     }
 }

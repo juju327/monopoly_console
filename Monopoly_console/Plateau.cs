@@ -19,6 +19,7 @@ namespace monopoly
 
         public void initPlateau()
         {
+            Cases = new List<CasePlateau>();
             // trouve les cases à créer (fichier XML)
             // remplit Cases avec les infos nécéssaires
 
@@ -74,56 +75,106 @@ namespace monopoly
 
             //Console.WriteLine(xdoc);
 
-            /*IEnumerable<CasePlateau> result = from c in xdoc.Descendants("plateau")
-                                              select new CasePlateau((string)c.Element("nom"), (int)c.Element("numero"))
-                                              {
-                                                  
-                                              };
-*/
+            // on récupère les paramètres de la partie, comme le nom des cases
+            // qui sont toujours les mêmes, ou les loyers des gares qui sont
+            // constants
+            var result = from e in xdoc.Descendants("parametres").Elements()
+                         select e;
+            XElement parametres = xdoc.Element("plateau").Element("parametres");
 
+            // prix d'achat d'une gare
+            int achatGare = (int)parametres.Element("gare").Element("achat");
+
+            // loyers des gares
+            int[] loyersGare = new int[4];
+            var loyersXMLGare = from e in parametres.Element("gare").Descendants("loyer").Elements()
+                                select e;
+
+            int i = 0;
+            foreach (XElement loyer in loyersXMLGare)
+            {
+                loyersGare[i] = (int)loyer;
+                i++;
+            }
+
+            // nom des cases spéciales
+            String nomCommunaute = (String)parametres.Element("communaute").Element("nom");
+            String nomChance = (String)parametres.Element("chance").Element("nom");
 
             //Run query
             // on récupère tous les éléments case du document
-            var result = from e in xdoc.Descendants("plateau").Elements()
-                         select e;
+            result = from e in xdoc.Descendants("cases").Elements()
+                     select e;
 
             //Chaque case va se désérialiser elle-même
             foreach (XElement x in result)
             {
-                CasePlateau c;
-                String typeCase = (String)x.Element("param").Attribute("type");
-                String spec = (String)x.Element("param").Attribute("spec");
+                CasePlateau c = null;
+
+                int numCase = (int)x.Element("numero");
+                String nomCase = (String)x.Element("nom");
+                String typeCase = (String)x.Element("param").Attribute("type"); // pioche
+                String spec = (String)x.Element("param").Attribute("spec"); // communaute
+
+
                 switch (typeCase)
                 {
                     case "propriete":
                         switch (spec)
                         {
                             case "gare":
-                                c = new Gare("", 0);
+                                c = new Gare(nomCase, numCase, loyersGare);
                                 break;
                             case "compagnie":
                                 c = new Compagnie("", 0);
                                 break;
                             case "terrain":
-                                c = new Terrain("", 0);
+                                int couleur = (int)x.Element("couleur");
+                                int[] loyers = new int[6];
+                                var loyersXML = from e in x.Descendants("loyer").Elements()
+                                                select e;
+                                int j = 0;
+                                foreach (XElement loyer in loyersXML)
+                                {
+                                    loyers[j] = (int)loyer;
+                                    j++;
+                                }
+                                c = new Terrain(nomCase, numCase, loyers, couleur);
                                 break;
                         }
                         break;
                     case "pioche":
-                        c = new CaseSpeciale("", 0, new Action(null));
+
+                        switch (spec)
+                        {
+                            case "communaute":
+                                nomCase = nomCommunaute;
+                                break;
+                            case "chance":
+                                nomCase = nomChance;
+                                break;
+
+                        }
+                        c = new CaseSpeciale(nomCase, numCase, new Action(null));
                         break;
-                    case "gare":
-                        c = new CasePropriete("", 0);
+
+                    case "speciale":
+                        c = new CaseSpeciale(nomCase, numCase, new Action(null));
                         break;
                     default:
                         c = null;
                         break;
 
+
                 }
+
+                Cases.Add(c);
                 Console.WriteLine(typeCase);
                 //Console.WriteLine(c);
                 //Result += String.Format("{0}\r\n", user);
             }
+
+            Console.WriteLine("toto");
 
 
         }

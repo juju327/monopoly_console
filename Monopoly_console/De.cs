@@ -5,8 +5,7 @@ using System.Text;
 
 namespace monopoly
 {
-   
-    
+
     class De
     {
 
@@ -23,15 +22,23 @@ namespace monopoly
             private set;
         }
 
-
-
- public void Lancerde()
+        private Random Rnd
         {
-            Random des = new Random();
-            de1 = des.Next(1, 7);
-            de2 = des.Next(1, 7);
-            Console.WriteLine("Le résultat du dé 1 est de : " + de1);
-            Console.WriteLine("Le résultat du dé 2 est de : " + de2);
-
-
+            get;
+            set;
         }
+
+        public De()
+        {
+            Rnd = new Random();
+            de1 = 0;
+            de2 = 0;
+        }
+
+        public void Lancerde()
+        {
+            de1 = Rnd.Next(1, 7);
+            de2 = Rnd.Next(1, 7);
+        }
+    }
+}

@@ -42,9 +42,19 @@ namespace monopoly
             return base.calculeLoyer();
         }
 
-        public Terrain(String n, int num) : base(n, num)
+        public int[] Loyers
         {
+            get;
+            private set;
+        }
 
+        public Terrain(String n, int num, int[] loyers, int c)
+            : base(n, num)
+        {
+            Loyers = new int[6];
+            if (loyers.Count() == Loyers.Count())
+                Loyers = loyers;
+            Couleur = (Couleur)c;
         }
     }
 
