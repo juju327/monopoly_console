@@ -23,11 +23,7 @@ namespace monopoly
             private set;
         }
 
-        public int NbDoubles
-        {
-            get;
-            private set;
-        }
+
 
  public void Lancerde()
         {
@@ -38,22 +34,4 @@ namespace monopoly
             Console.WriteLine("Le résultat du dé 2 est de : " + de2);
 
 
-            // cas où l'on a des doubles 
-            if (de1 == de2)
-            {
-                NbDoubles++;
-            }
-            else
-            {
-                NbDoubles = 0;
-
-            }
-
-            if (NbDoubles == 3)
-            { // aller en prison 
-
-            }
-            Console.WriteLine("le nombre de doubles est de " + NbDoubles);
         }
-    }
-}
