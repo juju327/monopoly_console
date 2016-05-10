@@ -30,13 +30,12 @@ namespace monopoly
         {
             Plateau = new Plateau();
             Plateau.initPlateau();
-            De = new De();
+
             initJoueurs();
         }
 
         private void initJoueurs()
         {
-           
             Joueurs = new List<Joueur>();
             Console.Write("Entrez le nombre de joueurs s'il vous plaît : ");
             int nbJoueurs = int.Parse(Console.ReadLine());
@@ -44,32 +43,56 @@ namespace monopoly
             {
                 Console.Write("\nEntrez le nom du joueur {0} : ", i + 1);
                 String s = Console.ReadLine();
-                Joueur J=new Joueur(s);
-                Joueurs.Add(J);
             }
-            Console.WriteLine("Veuillez lancer les dés pour commencer");
+
+            Dictionary<Joueur, int> resultats = new Dictionary<Joueur, int>();
 
             for (int i = 0; i < nbJoueurs; i++)
-            {   
+            {
                 De.Lancerde();
-                Console.Write("\n\n "+Joueurs[i].Nom+ " Votre résultat au dé est de {0}", De.de1 + De.de2);
-              
+                int res = De.de1 + De.de2;
+
+                // ajouter un couple "joueur", "résultats aux dés"
+                resultats.Add(Joueurs[i], res);
+
             }
+
+            // trier la liste d'items par valeur décroissante
+            // et récupérer les clés (type Joueur)
+            var items = from pair in resultats
+                        orderby pair.Value descending
+                        select pair.Key;
+
+            List<Joueur> finaleTriee = items.ToList();
+
+            Joueurs = finaleTriee;
         }
 
-        public void serialiser(XElement racine)
+        public override void serialiser(XElement racine)
         {
-            XElement partie = new XElement("Partie");
             /*XElement nom = new XElement("Nom", Nom);
             XElement vole = new XElement("Vole", Vole);
             XElement tailleOeufs = new XElement("TailleOeufs", TailleOeufs);
             XElement pays = new XElement("Pays", Pays);
 
             partie.Add(nom, vole, tailleOeufs, pays);*/
+
+
+
+
+            XElement partie = new XElement("Partie");
+            // <Partie></Partie>
+
+            XElement partie2 = new XElement("Partie", "toto");
+            // <Partie>toto</Partie>
+
             racine.Add(partie);
+            // <root>
+            // <partie></partie>
+            // </root>
         }
 
-        public object deserialiser(XElement racine)
+        public static new object deserialiser(XElement racine)
         {
             IEnumerable<Partie> result = from c in racine.Descendants("Oiseau")
                                          select new Partie()

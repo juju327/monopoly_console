@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace monopoly
 {
-    class CaseSpeciale : CasePlateau, Serialisable
+    class CaseSpeciale : CasePlateau
     {
         public Action ActionAEffectuer
         {
@@ -17,6 +18,21 @@ namespace monopoly
         {
 
         }
+
+        public override void serialiser(XElement racine)
+        {
+            XElement c = new XElement("case");
+
+            //c.Add();
+            Console.WriteLine(c);
+            //racine.Add(c);
+        }
+
+        public static new object deserialiser(XElement racine)
+        {
+            return null;
+        }
+
 
     }
 }

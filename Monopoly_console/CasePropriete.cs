@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace monopoly
 {
-    class CasePropriete : CasePlateau, Serialisable
+    public abstract class CasePropriete : CasePlateau
     {
         public int PrixAchat
         {
@@ -30,11 +31,13 @@ namespace monopoly
             return 0;
         }
 
-        public CasePropriete(String n, int num) : base(n, num)
+        public CasePropriete(String n, int num)
+            : base(n, num)
         {
 
         }
 
+        
 
     }
 }

@@ -6,13 +6,15 @@ using System.Xml.Linq;
 
 namespace monopoly
 {
-    interface Serialisable
+    public class Serialisable
     {
         /// <summary>
         /// Insère les informations de l'objet qui se sérialise dans la racine donnée
         /// </summary>
         /// <param name="racine">le noeud xml dans lequel insérer l'objet</param>
-        void serialiser(XElement racine);
+        public virtual void serialiser(XElement racine)
+        {
+        }
 
         /// <summary>
         /// récupère les informations disponibles dans la racine et
@@ -20,7 +22,10 @@ namespace monopoly
         /// </summary>
         /// <param name="racine">le noeud xml dans lequel l'objet est</param>
         /// <returns></returns>
-        Object deserialiser(XElement racine);
+        public static Object deserialiser(XElement racine)
+        {
+            return null;
+        }
 
         //List<Object> getAll(XElement racine);
     }

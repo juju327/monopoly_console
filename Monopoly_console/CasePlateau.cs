@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace monopoly
 {
-    class CasePlateau : Serialisable
+    public abstract class CasePlateau : Serialisable
     {
         public String Nom
         {
@@ -31,14 +31,9 @@ namespace monopoly
             return String.Format("Case n°{0} : {1}", Numero, Nom);
         }
 
-        public void serialiser(XElement racine)
-        {
-            throw new NotImplementedException();
-        }
+        // 
 
-        public object deserialiser(XElement racine)
-        {
-            throw new NotImplementedException();
-        }
+        //
+
     }
 }

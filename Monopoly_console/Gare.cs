@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace monopoly
 {
-    class Gare : CasePropriete, Serialisable
+    class Gare : CasePropriete
     {
         public int[] Loyers
         {
@@ -19,7 +19,7 @@ namespace monopoly
             Loyers = loyers;
         }
 
-        public new void serialiser(XElement racine)
+        public override void serialiser(XElement racine)
         {
             XElement gare = new XElement("case");
             XElement numero = new XElement("numero", Numero);
@@ -32,7 +32,7 @@ namespace monopoly
             racine.Add(gare);
         }
 
-        public new Object deserialiser(XElement racine)
+        public new static Object deserialiser(XElement racine)
         {
             return new Gare("", 0, new int[4]);
         }
