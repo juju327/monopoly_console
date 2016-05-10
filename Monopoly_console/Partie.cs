@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,36 +26,54 @@ namespace monopoly
             private set;
         }
 
-        public List<CartePioche> CartesPioches
-        {
-            get;
-            private set;
-        }
-
         public Partie()
         {
             Plateau = new Plateau();
             Plateau.initPlateau();
             De = new De();
             initJoueurs();
-
             jouer();
         }
 
         private void jouer()
         {
-            while (true)
-            {
+            while (true)  // A gérer ensuite
+
+
                 for (int i = 0; i < Joueurs.Count; i++)
                 {
-                    Console.WriteLine("\r\n " + Joueurs[i].Nom + " A votre tour. \n Veuillez appuyer sur Entrée pour lancer les dés.");
+                    Console.WriteLine("\r\n " + Joueurs[i].Nom + " Votre solde est de : "+Joueurs[i].Argent+" A votre tour. \n Veuillez appuyer sur Entrée pour lancer les dés.\n ");
                     Console.ReadKey();
                     De.Lancerde();
                     int res1 = De.de1 + De.de2;
                     Console.WriteLine(Joueurs[i].Nom + ". Votre avez obtenu " + res1);
+
+                    if (Joueurs[i].CaseActuelle + res1 < 40)
+                    {
+
+
+                        Joueurs[i].CaseActuelle = Joueurs[i].CaseActuelle + res1;
+                        
+
+
+                    }
+
+                    else
+                    {
+                        int temp = 40 - Joueurs[i].CaseActuelle; // le joueur finit son tour sur le plateau
+                        int res2 = res1 - temp; // calcul le nombre de cases à avancer pour le nouveau tour de plateau
+                        Joueurs[i].CaseActuelle = 0 + res2;
+                    }
+                    Console.WriteLine(" Vous êtes à présent sur la case " + Joueurs[i].CaseActuelle);
+                    int position = Joueurs[i].CaseActuelle;
+                    Console.WriteLine(Plateau.Cases[position].Nom);  //on récupère le nom de la case où se trouve le joueur
+                  
+                   
                 }
-            }
         }
+        
+        
+        
 
 
 
@@ -87,6 +105,8 @@ namespace monopoly
                 // ajouter un couple "joueur", "résultats aux dés"
 
                 resultats.Add(Joueurs[i], res);
+
+               
             }
 
             /* Gerer les personnes qui font deu fois le même résultat !
@@ -94,15 +114,23 @@ namespace monopoly
               if (resultats.ContainsValue(res))    
               {
                   Console.WriteLine("égalité");
+
                   var egals = from entry in resultats
                               where entry.Value == res
                               select entry.Key;
+
                   foreach (var egal in egals)
                   {
+
                       De.Lancerde();
                       res = De.de1 + De.de2;
                         
+
                   }
+
+
+
+
                     
               }
           }*/
@@ -123,30 +151,31 @@ namespace monopoly
             {
                 Console.WriteLine("\n" + finaleTriee[i].Nom + "\n Vous jouez en " + (i + 1) + "ème.");
             }
-
-
-
+            
         }
 
 
-        public override void serialiser(XElement racine)
+        public void serialiser(XElement racine)
         {
             XElement partie = new XElement("Partie");
             /*XElement nom = new XElement("Nom", Nom);
             XElement vole = new XElement("Vole", Vole);
             XElement tailleOeufs = new XElement("TailleOeufs", TailleOeufs);
             XElement pays = new XElement("Pays", Pays);
+
             partie.Add(nom, vole, tailleOeufs, pays);*/
             racine.Add(partie);
         }
 
-        public new static object deserialiser(XElement racine)
+        public object deserialiser(XElement racine)
         {
             IEnumerable<Partie> result = from c in racine.Descendants("Oiseau")
                                          select new Partie()
                                          {
                                              /*Nom = (string)c.Element("Nom"),
-                                             Pays = (string)c.Element("Pays")*/
+                                             Pays = (string)c.Element("Pays"),
+                                             Vole = (bool)c.Element("Vole"),
+                                             TailleOeufs = (string)c.Element("TailleOeufs")*/
                                          };
 
             return result.First();
