@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cartes>
+  <carte type="argent">
+    <nom>La Banque vous verse un dividende de 50€.</nom>
+    <somme>50</somme>
+  </carte>
+  <carte type="argent">
+    <nom>Votre immeuble et votre prêt rapportent. Vous devez toucher 150€.</nom>
+    <somme>150</somme>
+  </carte>
+  <carte type="argent">
+    <nom>Vous avez gagné le prix de mots croisés. Recevez 100€.</nom>
+    <somme>50</somme>
+  </carte>
+  <carte type="speciale">
+    <nom>Faites des réparations dans vos propriétés. Versez pour chaque maison 25€ et pour chaque hôtel 100€</nom>
+  </carte>
+  <carte type="argent">
+    <nom>Amende pour excès de vitesse 15€</nom>
+    <somme>-15</somme>
+  </carte>
+  <carte type="argent">
+    <nom>Amende pour ivresse 20€</nom>
+    <somme>-20</somme>
+  </carte>
+</cartes>
