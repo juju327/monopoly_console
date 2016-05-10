@@ -8,7 +8,7 @@ namespace monopoly
 {
     class Gare : CasePropriete
     {
-        public int[] Loyers
+        public static int[] Loyers
         {
             get;
             private set;
@@ -32,9 +32,17 @@ namespace monopoly
             racine.Add(gare);
         }
 
+        public static void setLoyers(int[] loy)
+        {
+            Loyers = loy;
+        }
+        
         public new static Object deserialiser(XElement racine)
         {
-            return new Gare("", 0, new int[4]);
+            int numCase = (int)racine.Element("numero");
+            String nomCase = (String)racine.Element("nom");
+
+            return new Gare(nomCase, numCase, Loyers);
         }
     }
 }

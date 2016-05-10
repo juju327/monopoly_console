@@ -83,7 +83,21 @@ namespace monopoly
 
         public static new object deserialiser(XElement racine)
         {
-            return new Terrain("",0, null, 0);
+            int numCase = (int)racine.Element("numero");
+            String nom = (String)racine.Element("nom");
+            int couleur = (int)racine.Element("couleur");
+
+            int[] loyers = new int[6];
+            var loyersXML = from e in racine.Descendants("loyer").Elements()
+                            select e;
+            int j = 0;
+            foreach (XElement loyer in loyersXML)
+            {
+                loyers[j] = (int)loyer;
+                j++;
+            }
+
+            return new Terrain(nom, numCase, loyers, couleur);
         }
     }
 

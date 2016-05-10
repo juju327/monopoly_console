@@ -2,7 +2,7 @@
 
 namespace monopoly
 {
-    class Joueur
+    public class Joueur
     {
         public string Nom
         {

@@ -31,7 +31,10 @@ namespace monopoly
 
         public new static object deserialiser(XElement racine)
         {
-            return null;
+            int numCase = (int)racine.Element("numero");
+            String nomCase = (String)racine.Element("nom");
+
+            return new Compagnie(nomCase, numCase);
         }
 
     }

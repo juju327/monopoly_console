@@ -237,6 +237,7 @@
       <numero>20</numero>
       <param type="speciale" spec="argent"/>
       <nom>Parc Gratuit</nom>
+      <somme>0</somme>
     </case>
     <case>
       <numero>21</numero>
@@ -421,7 +422,7 @@
       </loyer>
     </case>
     <case>
-      <numero>36</numero>
+      <numero>38</numero>
       <param type="speciale" spec="argent"/>
       <nom>Taxe de Luxe</nom>
       <somme>-100</somme>

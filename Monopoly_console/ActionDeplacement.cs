@@ -5,19 +5,29 @@ using System.Text;
 
 namespace monopoly
 {
+    // une classe qui gère les déplacements d'un nombre précis de cases
     class ActionDeplacement : Action
     {
-        public ActionDeplacement(Joueur j, CasePlateau dest, bool passerParCaseDepart) : base (j)
+        // le nombre de cases à bouger
+        public int NbCases
         {
-
-
-
-            JoueurBeneficiaire.deplacerA(dest, passerParCaseDepart);
+            get;
+            private set;
         }
 
-        public ActionDeplacement(Joueur j, int nbCases) : base(j)
+        // le constructeur qui initialise la méthode à exécuter
+        // et le nombre de cases
+        public ActionDeplacement(int nb)
         {
-            JoueurBeneficiaire.deplacerDe(nbCases);
+            executer = deplacerDeNbCases;
+            NbCases = nb;
         }
+
+        // la méthode à exécuter
+        private void deplacerDeNbCases(Joueur j)
+        {
+            j.deplacerDe(NbCases);
+        }
+
     }
 }

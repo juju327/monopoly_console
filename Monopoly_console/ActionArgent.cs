@@ -7,7 +7,6 @@ namespace monopoly
 {
     class ActionArgent : Action
     {
-        delegate void actionAFaire();
 
         public int Somme
         {
@@ -15,25 +14,23 @@ namespace monopoly
             private set;
         }
 
-        
-
-        public ActionArgent(Boolean gagnerArgent, Joueur j) : base(j)
+        public ActionArgent(Boolean gagnerArgent, int s)
         {
-            actionAFaire executer;
             if (gagnerArgent)
                 executer = gagner;
             else
                 executer = perdre;
+            Somme = s;
         }
 
-        public void gagner()
+        public void gagner(Joueur j)
         {
-            JoueurBeneficiaire.gagner(Somme);
+            j.gagner(Somme);
         }
 
-        public void perdre()
+        public void perdre(Joueur j)
         {
-            JoueurBeneficiaire.perdre(Somme);
+            j.perdre(Somme);
         }
     }
 }

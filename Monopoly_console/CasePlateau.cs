@@ -31,9 +31,5 @@ namespace monopoly
             return String.Format("Case n°{0} : {1}", Numero, Nom);
         }
 
-        // 
-
-        //
-
     }
 }

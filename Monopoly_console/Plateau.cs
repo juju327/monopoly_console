@@ -19,12 +19,16 @@ namespace monopoly
 
         public void initPlateau()
         {
-            Cases = new List<CasePlateau>();
             XDocument xdoc = XDocument.Load("..\\..\\plateau.xml");
 
             //Console.WriteLine(xdoc.Root);
             Plateau p = (Plateau)deserialiser(xdoc.Root);
-            //Cases = p.Cases;
+            Cases = p.Cases;
+        }
+
+        public Plateau()
+        {
+            Cases = new List<CasePlateau>();
         }
 
         public override void serialiser(XElement racine)
@@ -49,7 +53,7 @@ namespace monopoly
 
         public new object deserialiser(XElement racine)
         {
-            //Plateau plateau = new Plateau();
+            Plateau plateau = new Plateau();
 
             // on récupère les paramètres de la partie, comme le nom des cases
             // qui sont toujours les mêmes, ou les loyers des gares qui sont
@@ -58,6 +62,8 @@ namespace monopoly
 
             // prix d'achat d'une gare
             int achatGare = (int)parametres.Element("gare").Element("achat");
+
+
 
             // loyers des gares
             int[] loyersGare = new int[4];
@@ -71,6 +77,9 @@ namespace monopoly
                 i++;
             }
 
+            Gare.setLoyers(loyersGare);
+
+
             // nom des cases spéciales
             String nomCommunaute = (String)parametres.Element("communaute").Element("nom");
             String nomChance = (String)parametres.Element("chance").Element("nom");
@@ -80,7 +89,7 @@ namespace monopoly
             var result = from e in racine.Descendants("cases").Elements()
                          select e;
 
-            /*
+
             foreach (XElement x in result)
             {
                 String spec = (String)x.Element("param").Attribute("spec");
@@ -92,75 +101,38 @@ namespace monopoly
                         c = (Terrain)Terrain.deserialiser(x);
                         break;
                     case "communaute":
+                        c = (CaseSpeciale)CaseSpeciale.deserialiser(x);  // case pioche
                         break;
                     case "chance":
+                        c = (CaseSpeciale)CaseSpeciale.deserialiser(x); // case pioche
                         break;
                     case "gare":
+                        c = (Gare)Gare.deserialiser(x);
                         break;
                     case "compagnie":
+                        c = (Compagnie)Compagnie.deserialiser(x);
                         break;
                     case "argent":
+                        c = (CaseSpeciale)CaseSpeciale.deserialiser(x);
                         break;
                     case "allezprison":
+                        c = (CaseSpeciale)CaseSpeciale.deserialiser(x);
                         break;
                     case "prison":
+                        c = (CaseSpeciale)CaseSpeciale.deserialiser(x);
                         break;
 
                 }
 
+                plateau.Cases.Add(c);
+
+                //Cases.Add(c);
+                Console.WriteLine(c.Numero);
+
             }
 
-             * */
 
-
-
-
-
-
-            //Chaque case va se désérialiser elle-même
-            foreach (XElement x in result)
-            {
-                CasePlateau c = null;
-
-                int numCase = (int)x.Element("numero");
-                String nomCase = (String)x.Element("nom");
-                String typeCase = (String)x.Element("param").Attribute("type"); // 
-                String spec = (String)x.Element("param").Attribute("spec"); //
-
-
-
-                Console.WriteLine(spec);
-                switch (typeCase)
-                {
-
-                    case "propriete":
-                        switch (spec)
-                        {
-                            case "gare":
-                                c = new Gare(nomCase, numCase, loyersGare);
-                                break;
-                            case "compagnie":
-                                c = new Compagnie(nomCase, numCase);
-                                break;
-                            case "terrain":
-                                int couleur = (int)x.Element("couleur");
-                                int[] loyers = new int[6];
-                                var loyersXML = from e in x.Descendants("loyer").Elements()
-                                                select e;
-                                int j = 0;
-                                foreach (XElement loyer in loyersXML)
-                                {
-                                    loyers[j] = (int)loyer;
-                                    j++;
-                                }
-                                c = new Terrain(nomCase, numCase, loyers, couleur);
-                                break;
-                        }
-                        break;
-
-                    case "speciale":
-                        c = new CaseSpeciale(nomCase, numCase, new Action(null));
-                        break;
+            /*
                     case "pioche":
 
                         switch (spec)
@@ -173,24 +145,13 @@ namespace monopoly
                                 break;
 
                         }
-                        c = new CaseSpeciale(nomCase, numCase, new Action(null));
+                        c = new CaseSpeciale(nomCase, numCase, new Action());
                         break;
-                    default:
-                        c = null;
-                        break;
+  
 
+            }*/
 
-                }
-
-
-                //plateau.Cases.Add(c);
-
-                Cases.Add(c);
-                Console.WriteLine(c.Numero);
-
-            }
-           
-            return null;
+            return plateau;
         }
     }
 }
