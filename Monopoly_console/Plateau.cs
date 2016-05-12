@@ -16,19 +16,47 @@ namespace monopoly
             get;
             private set;
         }
+        public Partie Partie { get; private set; }
 
         public void initPlateau()
         {
             XDocument xdoc = XDocument.Load("..\\..\\plateau.xml");
 
             //Console.WriteLine(xdoc.Root);
-            Plateau p = (Plateau)deserialiser(xdoc.Root);
-            Cases = p.Cases;
+            Cases = (List<CasePlateau>)Plateau.deserialiser(xdoc.Root);
         }
 
-        public Plateau()
+        public Plateau(Partie p)
         {
+            Partie = p;
             Cases = new List<CasePlateau>();
+            initPlateau();
+        }
+
+        public CasePlateau getCaseFromNum(int numero)
+        {
+            for (int i = 0; i < Cases.Count; i++)
+            {
+                if (i == numero) return Cases[i];
+            }
+            return null;
+        }
+
+        public void associerPioches(Pioche chance, Pioche communaute)
+        {
+            for (int i = 0; i < Cases.Count; i++)
+            {
+                if (Cases[i].Nom == "Chance")
+                {
+                    CasePioche c = Cases[i] as CasePioche;
+                    c.associerPioche(chance);
+                }
+                else if (Cases[i].Nom == "Caisse de communauté")
+                {
+                    CasePioche c = Cases[i] as CasePioche;
+                    c.associerPioche(communaute);
+                }
+            }
         }
 
         public override void serialiser(XElement racine)
@@ -51,9 +79,9 @@ namespace monopoly
             racine.Add(cases);
         }
 
-        public new object deserialiser(XElement racine)
+        public static new object deserialiser(XElement racine)
         {
-            Plateau plateau = new Plateau();
+            List<CasePlateau> cases = new List<CasePlateau>();
 
             // on récupère les paramètres de la partie, comme le nom des cases
             // qui sont toujours les mêmes, ou les loyers des gares qui sont
@@ -62,7 +90,10 @@ namespace monopoly
 
             // prix d'achat d'une gare
             int achatGare = (int)parametres.Element("gare").Element("achat");
+            Gare.PrixAchatGare = achatGare;
 
+            int achatCompagnie = (int)parametres.Element("compagnie").Element("achat");
+            Compagnie.PrixAchatCompagnie = achatCompagnie;
 
 
             // loyers des gares
@@ -101,10 +132,10 @@ namespace monopoly
                         c = (Terrain)Terrain.deserialiser(x);
                         break;
                     case "communaute":
-                        c = (CaseSpeciale)CaseSpeciale.deserialiser(x);  // case pioche
+                        c = (CasePioche)CasePioche.deserialiser(x);  // case pioche
                         break;
                     case "chance":
-                        c = (CaseSpeciale)CaseSpeciale.deserialiser(x); // case pioche
+                        c = (CasePioche)CasePioche.deserialiser(x); // case pioche
                         break;
                     case "gare":
                         c = (Gare)Gare.deserialiser(x);
@@ -124,34 +155,14 @@ namespace monopoly
 
                 }
 
-                plateau.Cases.Add(c);
+                cases.Add(c);
 
                 //Cases.Add(c);
-                Console.WriteLine(c.Numero);
+                //Console.WriteLine(c.Numero);
 
             }
-
-
-            /*
-                    case "pioche":
-
-                        switch (spec)
-                        {
-                            case "communaute":
-                                nomCase = nomCommunaute;
-                                break;
-                            case "chance":
-                                nomCase = nomChance;
-                                break;
-
-                        }
-                        c = new CaseSpeciale(nomCase, numCase, new Action());
-                        break;
-  
-
-            }*/
-
-            return plateau;
+            return cases;
         }
+
     }
 }

@@ -1,26 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cartes>
-  <carte type="argent">
-    <nom>La Banque vous verse un dividende de 50€.</nom>
+  <carte type="argent" spec="gagner">
+    <nom>Recevez votre revenu annuel 100€.</nom>
+    <somme>100</somme>
+  </carte>
+  <carte type="argent" spec="gagner">
+    <nom>Les contributions vous remboursent la somme de 20€.</nom>
+    <somme>20</somme>
+  </carte>
+  <carte type="argent" spec="gagner">
+    <nom>Vous avez gagné le deuxième Prix de Beauté. Recevez 10€.</nom>
+    <somme>10</somme>
+  </carte>
+  <carte type="argent" spec="gagner">
+    <nom>Erreur de la Banque en votre faveur. Recevez 200€.</nom>
+    <somme>200</somme>
+  </carte>
+  <carte type="argent" spec="gagner">
+    <nom>La vente de votre stock vous rapporte 50€.</nom>
     <somme>50</somme>
   </carte>
-  <carte type="argent">
-    <nom>Votre immeuble et votre prêt rapportent. Vous devez toucher 150€.</nom>
-    <somme>150</somme>
+  <carte type="argent" spec="gagner">
+    <nom>Recevez votre intérêt sur l'emprunt à 7% : 25€.</nom>
+    <somme>25</somme>
   </carte>
-  <carte type="argent">
-    <nom>Vous avez gagné le prix de mots croisés. Recevez 100€.</nom>
+
+  <carte type="speciale" spec="anniversaire">
+    <nom>C'est votre anniversaire : chaque joueur vous donne 10€.</nom>
+    <somme>10</somme>
+  </carte>
+
+  <carte type="argent" spec="perdre">
+    <nom>Payez votre Police d'Assurance s'élevant à 50€.</nom>
     <somme>50</somme>
   </carte>
-  <carte type="speciale">
-    <nom>Faites des réparations dans vos propriétés. Versez pour chaque maison 25€ et pour chaque hôtel 100€</nom>
+  <carte type="argent" spec="perdre">
+    <nom>Payez à l'Hôpital 100€.</nom>
+    <somme>100</somme>
   </carte>
-  <carte type="argent">
-    <nom>Amende pour excès de vitesse 15€</nom>
-    <somme>-15</somme>
+  <carte type="argent" spec="perdre">
+    <nom>Payez la note du médecin 50€.</nom>
+    <somme>50</somme>
   </carte>
-  <carte type="argent">
-    <nom>Amende pour ivresse 20€</nom>
-    <somme>-20</somme>
+
+  <carte type="speciale" spec="payer_ou_tirer">
+    <nom>Payez une amende de 10€ ou bien tirez une carte "CHANCE"</nom>
+  </carte>
+
+  <carte type="speciale" spec="prison">
+    <nom>Vous êtes libérés de prison.
+Cette carte peut être conservée jusqu'à ce qu'elle soit utilisée ou vendue.</nom>
+  </carte>
+
+  <carte type="deplacement" spec="destination">
+    <nom>Retournez à Belleville.</nom>
+    <param>1</param>
+  </carte>
+
+  <carte type="deplacement" spec="destination">
+    <nom>Allez en prison. Avancez tout droit en prison.
+Ne passez pas par la case Départ. Ne recevez pas 200€.</nom>
+    <param>10</param>
+  </carte>
+  <carte type="deplacement" spec="destination">
+    <nom>Avancez jusqu'à la case Départ.</nom>
+    <param>0</param>
   </carte>
 </cartes>

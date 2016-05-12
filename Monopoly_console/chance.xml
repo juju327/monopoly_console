@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cartes>
+  <carte type="argent" spec="gagner">
+    <nom>La Banque vous verse un dividende de 50€.</nom>
+    <somme>50</somme>
+  </carte>
+  <carte type="argent" spec="gagner">
+    <nom>Votre immeuble et votre prêt rapportent. Vous devez toucher 150€.</nom>
+    <somme>150</somme>
+  </carte>
+  <carte type="argent" spec="gagner">
+    <nom>Vous avez gagné le prix de mots croisés. Recevez 100€.</nom>
+    <somme>50</somme>
+  </carte>
+
+  <carte type="speciale" spec="reparations">
+    <nom>Faites des réparations dans vos propriétés.
+Versez pour chaque maison 25€ et pour chaque hôtel 100€.</nom>
+  </carte>
+
+  <carte type="argent" spec="perdre">
+    <nom>Amende pour excès de vitesse 15€.</nom>
+    <somme>15</somme>
+  </carte>
+  <carte type="argent" spec="perdre">
+    <nom>Amende pour ivresse 20€.</nom>
+    <somme>20</somme>
+  </carte>
+
+  <carte type="speciale" spec="reparations_voirie">
+    <nom>Vous êtes imposés pour des réparations de voirie à raison de : 40€ par maison et 115€ par hôtel.</nom>
+  </carte>
+
+  <carte type="argent" spec="perdre">
+    <nom>Payez pour frais de scolarité 150€.</nom>
+    <somme>150</somme>
+  </carte>
+  <carte type="speciale" spec="prison">
+    <nom>Vous êtes libérés de prison.
+Cette carte peut être conservée jusqu'à ce qu'elle soit utilisée ou vendue.
+    </nom>
+  </carte>
+  <carte type="deplacement" spec="destination">
+    <nom>Allez en prison. Avancez tout droit en prison.
+Ne passez pas par la case Départ. Ne recevez pas 200€.</nom>
+    <param>10</param>
+  </carte>
+  <carte type="deplacement" spec="destination">
+    <nom>Rendez-vous à l'Avenue Henri-Martin.
+Si vous passez par la case Départ, recevez 200€.</nom>
+    <param>24</param>
+  </carte>
+  <carte type="deplacement" spec="destination">
+    <nom>Rendez-vous à la Rue de la Paix.</nom>
+    <param>39</param>
+  </carte>
+  <carte type="deplacement" spec="destination">
+    <nom>Avancez jusqu'à la case Départ.</nom>
+    <param>0</param>
+  </carte>
+  <carte type="deplacement" spec="destination">
+    <nom>Allez jusqu'à la Gare de Lyon. Si vous passez par la case Départ, recevez 200€.</nom>
+    <param>15</param>
+  </carte>
+  <carte type="deplacement" spec="nbcases">
+    <nom>Reculez de 3 cases.</nom>
+    <param>3</param>
+  </carte>
+  <carte type="deplacement" spec="destination">
+    <nom>Avancez au Boulevard de la Villette. Si vous passez par la case Départ, recevez 200€.</nom>
+    <param>11</param>
+  </carte>
+</cartes>

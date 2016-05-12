@@ -11,19 +11,25 @@ namespace monopoly
         public int PrixAchat
         {
             get;
-            private set;
+            protected set;
         }
 
         public bool Vendu
         {
             get;
-            private set;
+            protected set;
         }
 
         public bool PrixHypotheque
         {
             get;
-            private set;
+            protected set;
+        }
+
+        public Joueur Proprietaire
+        {
+            get;
+            protected set;
         }
 
         public virtual int calculeLoyer()

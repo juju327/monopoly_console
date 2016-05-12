@@ -40,7 +40,7 @@ namespace monopoly
 
         public override int calculeLoyer()
         {
-            return base.calculeLoyer();
+            return 150;
         }
 
         public int[] Loyers
@@ -49,13 +49,66 @@ namespace monopoly
             private set;
         }
 
-        public Terrain(String n, int num, int[] loyers, int c)
+        public Terrain(String n, int num, int[] loyers, int c, int prixAchat)
             : base(n, num)
         {
             Loyers = new int[6];
             if (loyers.Count() == Loyers.Count())
                 Loyers = loyers;
             Couleur = (Couleur)c;
+            PrixAchat = prixAchat;
+        }
+
+
+        public override void estTombeSur(Joueur j)
+        {
+            if (Proprietaire == null)
+            {
+                Console.WriteLine("Souhaitez-vous acheter {0} pour {1} ? (o/n)", Nom, PrixAchat);
+                String reponse = Console.ReadLine();
+                if (reponse == "o")
+                {
+                    if (j.Argent >= PrixAchat)
+                    {
+                        // on ajoute la ppté à la liste du joueur
+                        j.ListeProprietes.Add(this);
+
+                        // il achète la ppté
+                        j.perdre(PrixAchat);
+
+                        // on change son propriétaire
+                        Proprietaire = j;
+
+                        Console.WriteLine("Vous avez acheté {0} pour {1} ! ", Nom, PrixAchat);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Vous n'avez pas assez d'argent !");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Vous n'avez pas souhaité acheter.");
+                }
+            }
+            else if (Proprietaire != j)
+            {
+                int loyer = calculeLoyer();
+                Console.WriteLine("Vous êtes chez {0}, vous lui devez {1} !", Proprietaire.Nom, loyer);
+                if (j.Argent >= loyer)
+                {
+                    j.perdre(loyer);
+                    Console.WriteLine("Vous avez payé {0} de loyer à {1}", Proprietaire.Nom, loyer);
+                }
+                else
+                {
+                    Console.WriteLine("Vous n'avez pas assez d'argent ! Vous avez perdu !");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Vous êtes chez vous !");
+            }
         }
 
         public override void serialiser(XElement racine)
@@ -86,6 +139,7 @@ namespace monopoly
             int numCase = (int)racine.Element("numero");
             String nom = (String)racine.Element("nom");
             int couleur = (int)racine.Element("couleur");
+            int prixAchat = (int)racine.Element("achat");
 
             int[] loyers = new int[6];
             var loyersXML = from e in racine.Descendants("loyer").Elements()
@@ -97,7 +151,7 @@ namespace monopoly
                 j++;
             }
 
-            return new Terrain(nom, numCase, loyers, couleur);
+            return new Terrain(nom, numCase, loyers, couleur, prixAchat);
         }
     }
 

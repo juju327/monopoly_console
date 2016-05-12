@@ -17,7 +17,7 @@ namespace monopoly
         public CaseSpeciale(String n, int num, Action action)
             : base(n, num)
         {
-
+            ActionAEffectuer = action;
         }
 
         public override void serialiser(XElement racine)
@@ -73,9 +73,14 @@ namespace monopoly
                     break;
             }
 
-            return new CaseSpeciale(nomCase, numCase, action);
+            CaseSpeciale c = new CaseSpeciale(nomCase, numCase, action);
+            return c;
         }
 
-
+        public override void estTombeSur(Joueur j)
+        {
+            Console.WriteLine("Vous êtes tombé sur la case {0}", Nom);
+            this.ActionAEffectuer.executer(j);
+        }
     }
 }

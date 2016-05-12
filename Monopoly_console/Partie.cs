@@ -20,65 +20,132 @@ namespace monopoly
             private set;
         }
 
-        public De De
+        public Des Des
         {
             get;
             private set;
         }
 
+        public Pioche CartesCommunaute
+        {
+            get;
+            private set;
+        }
+
+        public Pioche CartesChance
+        {
+            get;
+            private set;
+        }
+        public static Joueur JoueurEnCours { get; private set; }
+
         public Partie()
         {
-            Plateau = new Plateau();
-            Plateau.initPlateau();
-            De = new De();
+            Plateau = new Plateau(this);
+            initCartes();
+            Plateau.associerPioches(CartesChance, CartesCommunaute);
+            
+
+            Plateau.associerPioches(CartesChance, CartesCommunaute);
+            Des = new Des();
             initJoueurs();
             jouer();
+        }
+
+        private void initCartes()
+        {
+            XDocument xdoc = XDocument.Load("..\\..\\chance.xml");
+
+            CartesChance = new Pioche(Plateau, xdoc.Root);
+
+            xdoc = XDocument.Load("..\\..\\communaute.xml");
+
+            CartesCommunaute = new Pioche(Plateau, xdoc.Root);
         }
 
         private void jouer()
         {
             while (true)  // A gérer ensuite
 
-
                 for (int i = 0; i < Joueurs.Count; i++)
                 {
-                    Console.WriteLine("\r\n " + Joueurs[i].Nom + " Votre solde est de : "+Joueurs[i].Argent+" A votre tour. \n Veuillez appuyer sur Entrée pour lancer les dés.\n ");
+                    JoueurEnCours = Joueurs[i];
+
+                    afficherInfos(JoueurEnCours);
+                    int position = JoueurEnCours.CaseActuelle;
+
+                    Console.WriteLine("Veuillez appuyer sur Entrée pour lancer les dés.");
                     Console.ReadKey();
-                    De.Lancerde();
-                    int res1 = De.de1 + De.de2;
-                    Console.WriteLine(Joueurs[i].Nom + ". Votre avez obtenu " + res1);
+                    Des.lancerDes();
+                    int res1 = Des.de1 + Des.de2;
+                    Console.WriteLine("Votre avez obtenu {0} aux dés.", res1);
 
-                    if (Joueurs[i].CaseActuelle + res1 < 40)
+                    if (position + res1 < 40)
                     {
+                        // à voir qui gère le déplacement : la partie ou le joueur ?
+                        CasePlateau destination = Plateau.getCaseFromNum(res1 + position);
+                        JoueurEnCours.deplacerA(destination, true);
 
-
-                        Joueurs[i].CaseActuelle = Joueurs[i].CaseActuelle + res1;
-                        
-
-
+                        //Joueurs[i].CaseActuelle = Joueurs[i].CaseActuelle + res1;
                     }
 
                     else
                     {
-                        int temp = 40 - Joueurs[i].CaseActuelle; // le joueur finit son tour sur le plateau
-                        int res2 = res1 - temp; // calcul le nombre de cases à avancer pour le nouveau tour de plateau
-                        Joueurs[i].CaseActuelle = 0 + res2;
+                        //int temp = 40 - Joueurs[i].CaseActuelle; // le joueur finit son tour sur le plateau
+                        //int res2 = res1 - temp; // calcule le nombre de cases à avancer pour le nouveau tour de plateau
+                        //Joueurs[i].CaseActuelle = 0 + res2;
+
+                        CasePlateau destination = Plateau.getCaseFromNum(res1 + position - 40);
+                        JoueurEnCours.deplacerA(destination, true);
                     }
-                    Console.WriteLine(" Vous êtes à présent sur la case " + Joueurs[i].CaseActuelle);
-                    int position = Joueurs[i].CaseActuelle;
-                    Console.WriteLine(Plateau.Cases[position].Nom);  //on récupère le nom de la case où se trouve le joueur
-                  
-                   
+
+                    CasePlateau caseTombe = Plateau.getCaseFromNum(JoueurEnCours.CaseActuelle);
+
+                    caseTombe.estTombeSur(JoueurEnCours);
+                    position = Joueurs[i].CaseActuelle;
+                    int argent = Joueurs[i].Argent;
+                    Console.WriteLine("Position :  {0} --- Solde : {1} ", caseTombe, argent);
+
+                    Console.WriteLine("Appuyez sur Entrée pour finir votre tour.");
+                    Console.ReadLine();
                 }
         }
-        
-        
-        
+
+        private void afficherTitre()
+        {
+            Console.WriteLine(@"
+************               MONOPOLY           ************");
+        }
+
+        private void afficherInfos(Joueur j)
+        {
+            int position = j.CaseActuelle;
+            String nomCase = Plateau.getCaseFromNum(position).Nom;
+            Console.Clear();
+            afficherTitre();
+            Console.WriteLine(@"
+------------    Tour du joueur 1 : {0} ------------", j.Nom);
+            Console.WriteLine("Position :  {0} --- Solde : {1} ", Plateau.getCaseFromNum(position).Nom, j.Argent);
+        }
 
 
+        public void anniversaire()
+        {
+            int somme = 0;
+            for (int i = 0; i < Joueurs.Count; i++)
+            {
+                if (Joueurs[i] != JoueurEnCours)
+                    Joueurs[i].perdre(10);
+                somme += 10;
+            }
+            JoueurEnCours.gagner(somme);
+
+        }
 
         private void initJoueurs()
         {
+            Console.Clear();
+            afficherTitre();
             int[] de = new int[100];
             Joueurs = new List<Joueur>();
             Console.Write("Entrez le nombre de joueurs s'il vous plaît : ");
@@ -92,21 +159,21 @@ namespace monopoly
             }
 
             Console.WriteLine("Veuillez lancer les dés pour commencer. \n Appuyez sur la touche Entree pour lancer les dés \r\n");
-            Console.ReadKey();
+            Console.ReadLine();
 
 
             Dictionary<Joueur, int> resultats = new Dictionary<Joueur, int>();
 
             for (int i = 0; i < nbJoueurs; i++)
             {
-                De.Lancerde();
-                int res = De.de1 + De.de2;
+                Des.lancerDes();
+                int res = Des.de1 + Des.de2;
                 Console.WriteLine(Joueurs[i].Nom + ". Votre score est de " + res);
                 // ajouter un couple "joueur", "résultats aux dés"
 
                 resultats.Add(Joueurs[i], res);
 
-               
+
             }
 
             /* Gerer les personnes qui font deu fois le même résultat !
@@ -124,19 +191,9 @@ namespace monopoly
 
                       De.Lancerde();
                       res = De.de1 + De.de2;
-                        
-
-                  }
-
-
-
-
-                    
+                  }   
               }
           }*/
-
-
-
 
             // trier la liste d'items par valeur décroissante
             // et récupérer les clés (type Joueur)
@@ -151,7 +208,9 @@ namespace monopoly
             {
                 Console.WriteLine("\n" + finaleTriee[i].Nom + "\n Vous jouez en " + (i + 1) + "ème.");
             }
-            
+
+            Console.ReadLine();
+
         }
 
 

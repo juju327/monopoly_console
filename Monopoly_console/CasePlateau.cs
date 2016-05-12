@@ -26,6 +26,8 @@ namespace monopoly
             Numero = num;
         }
 
+        public abstract void estTombeSur(Joueur j);
+
         public override string ToString()
         {
             return String.Format("Case n°{0} : {1}", Numero, Nom);

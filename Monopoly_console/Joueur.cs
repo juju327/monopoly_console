@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace monopoly
 {
@@ -28,6 +29,16 @@ namespace monopoly
             private set;
         }
 
+        public void ajouterCarteLiberePrison()
+        {
+            NbCarteLiberation++;
+        }
+
+        public void utiliserCarteLiberePrison()
+        {
+            NbCarteLiberation--;
+        }
+
         public int NbTourPrison
         {
             get;
@@ -53,7 +64,15 @@ namespace monopoly
 
         public void deplacerA(CasePlateau dest, bool passerParCaseDepart)
         {
-            throw new System.NotImplementedException();
+            CaseActuelle = dest.Numero;
+
+            // si on passe par la case départ
+            if (passerParCaseDepart & dest.Numero < CaseActuelle)
+                gagner(200);
+
+            // si on s'arrête sur la case départ
+            if (dest.Numero == 0)
+                gagner(200);
         }
 
         public void deplacerDe(int nbCases)
@@ -61,14 +80,21 @@ namespace monopoly
             throw new System.NotImplementedException();
         }
 
-        public void gagner(int Somme)
+        public void gagner(int somme)
         {
-            throw new System.NotImplementedException();
+            Argent += somme;
         }
 
-        public void perdre(int Somme)
+        public void perdre(int somme)
         {
-            throw new System.NotImplementedException();
+            if (Argent >= somme) Argent -= somme;
+            else hypothequer(somme);
+        }
+
+        // tente d'hypothéquer pour rassembler la somme en paramètre
+        public void hypothequer(int dette)
+        {
+            throw new NotImplementedException();
         }
     }
 
