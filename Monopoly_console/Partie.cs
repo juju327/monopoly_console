@@ -46,8 +46,6 @@ namespace monopoly
             initCouleurs();
             Plateau.associerPioches(CartesChance, CartesCommunaute);
             
-
-            Plateau.associerPioches(CartesChance, CartesCommunaute);
             Des = new Des();
             initJoueurs();
             jouer();
@@ -58,7 +56,8 @@ namespace monopoly
             XDocument xdoc = XDocument.Load("..\\..\\chance.xml");
 
             CartesChance = new Pioche(Plateau, xdoc.Root);
-             xdoc = XDocument.Load("..\\..\\communaute.xml");
+            
+            xdoc = XDocument.Load("..\\..\\communaute.xml");
 
             CartesCommunaute = new Pioche(Plateau, xdoc.Root);
 
@@ -74,10 +73,12 @@ namespace monopoly
                 {
                     JoueurEnCours = Joueurs[i];
 
+                    Console.Clear();
+                    afficherConsole(i);
+                    
                     afficherInfos(JoueurEnCours, compteurTour);
+                    
                     int position = JoueurEnCours.CaseActuelle;
-                    
-                    
                     
                     if (compteurTour >= 2 && JoueurEnCours.ListeProprietes.Count>0)
                     {
@@ -105,7 +106,7 @@ namespace monopoly
                     }
                     
                         Console.WriteLine("Veuillez appuyer sur Entrée pour lancer les dés.");
-                        Console.ReadKey();
+                        Console.ReadLine();
                         Des.lancerDes();
                         int res1 = Des.de1 + Des.de2;
                         Console.WriteLine("Votre avez obtenu {0} aux dés.", res1);
@@ -139,7 +140,7 @@ namespace monopoly
                         if (position == 20)
                         {
                             argent += Pioche.Plateau.parc;
-                            Console.WriteLine("Postion : Parc gratuit .Vous récupérez le solde du parc gratuit de" + Pioche.Plateau.parc + " \n Solde :" + argent);
+                            Console.WriteLine("Position : Parc gratuit. Vous récupérez le solde du parc gratuit de " + Plateau.parc + " \nSolde :" + argent);
                             Console.ReadLine();
 
                         }
@@ -151,6 +152,10 @@ namespace monopoly
                             Console.WriteLine("Appuyez sur Entrée pour finir votre tour.");
                             Console.ReadLine();
                         }
+                        Console.Clear();
+                        afficherConsole(i);
+                        Console.WriteLine("Appuyez sur Entrée pour finir votre tour.");
+                        Console.ReadLine();
 
                     } compteurTour++;
 
@@ -190,6 +195,77 @@ namespace monopoly
 
         }
 
+        private void afficherConsole(int numJoueur)
+        {
+            Console.Write(
+@"
+ ____ ____ ____ ____ ____ ____ ____ ____ ____ ____ ____ 
+|DEP |VIOL|COMM|VIOL|IMPO|GARE|CIEL|CHAN|CIEL|CIEL|PRIS|
+|____|____|____|____|____|____|____|____|____|____|____|
+|BLEU|                                            |ROSE|
+|____|     * * *        MONOPOLY       * * *      |____|
+|LUXE|                                            |ELEC|
+|____|                                            |____|
+|BLEU|                                            |ROSE|
+|____|                                            |____|
+|CHAN|                                            |ROSE|
+|____|                                            |____|
+|GARE|                                            |GARE|
+|____|                                            |____|
+|VERT|                                            |ORAN|
+|____|                                            |____|
+|COMM|                                            |COMM| 
+|____|                                            |____|
+|VERT|                                            |ORAN|
+|____|                                            |____|
+|VERT|                                            |ORAN|
+|____|____ ____ ____ ____ ____ ____ ____ ____ ____|____|
+|ALLE|JAUN|EAUX|JAUN|JAUN|GARE|ROUG|ROUG|CHAN|ROUG|PARC|
+|PRIS|____|____|____|____|____|____|____|____|____|____|");
+
+
+            for (int i = 0; i < Joueurs.Count; i++)
+            {
+                int position = Joueurs[i].CaseActuelle;
+                afficherJoueurSurConsole(position, i);
+            }
+
+
+            Console.ReadLine();
+        }
+        
+        public void afficherJoueurSurConsole(int position, int numJoueur)
+        {
+            // 1ère ligne du plateau
+            if (position < 11)
+            {
+                Console.CursorTop = 3;
+                Console.CursorLeft = position == 0 ? 2 : 5 * (position+1) - 3;
+            }
+            // colonne de droite
+            else if (position > 10 && position < 21)
+            {
+                Console.CursorTop = 3 + (position - 10) * 2;
+                Console.CursorLeft = 52;
+            }
+            // ligne du bas
+            else if (position > 20 && position < 31)
+            {
+                Console.CursorTop = 23;
+                Console.CursorLeft = position == 30 ? 2 : 2 + (30 - position) * 5;
+            }
+            // ligne de gauche pos < 39
+            else
+            {
+                Console.CursorTop = 3 + (40 - position) * 2;
+                Console.CursorLeft = 3;
+            }
+
+            Console.WriteLine(numJoueur);
+            Console.CursorLeft = 0;
+            Console.CursorTop = 7;
+        }
+        
         private void initJoueurs()
         {
             //Console.Clear();
