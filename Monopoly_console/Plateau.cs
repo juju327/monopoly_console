@@ -18,6 +18,17 @@ namespace monopoly
         }
         public Partie Partie { get; private set; }
 
+
+        //permet de gérer le parc gratuit
+        public int parc
+        {
+            get;
+            set;
+
+        }
+
+       
+
         public void initPlateau()
         {
             XDocument xdoc = XDocument.Load("..\\..\\plateau.xml");
@@ -28,6 +39,7 @@ namespace monopoly
 
         public Plateau(Partie p)
         {
+            parc = 0;
             Partie = p;
             Cases = new List<CasePlateau>();
             initPlateau();
@@ -41,6 +53,9 @@ namespace monopoly
             }
             return null;
         }
+
+
+        
 
         public void associerPioches(Pioche chance, Pioche communaute)
         {

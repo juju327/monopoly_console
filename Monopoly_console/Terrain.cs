@@ -55,7 +55,7 @@ namespace monopoly
             Loyers = new int[6];
             if (loyers.Count() == Loyers.Count())
                 Loyers = loyers;
-            Couleur = (Couleur)c;
+            //Couleur = new Couleur;
             PrixAchat = prixAchat;
         }
 
@@ -120,7 +120,7 @@ namespace monopoly
             param.SetAttributeValue("type", "propriete");
             param.SetAttributeValue("spec", "terrain");
             XElement nom = new XElement("nom", Nom);
-            XElement couleur = new XElement("couleur", (int)Couleur);
+            XElement couleur = new XElement("couleur", Couleur.Numero);
             XElement achat = new XElement("achat", PrixAchat);
             XElement loyers = new XElement("loyer");
             for (int i = 0; i < 6; i++)
@@ -155,15 +155,5 @@ namespace monopoly
         }
     }
 
-    enum Couleur
-    {
-        Rose,
-        BleuCiel,
-        Violet,
-        Orange,
-        Rouge,
-        Jaune,
-        Vert,
-        Bleu
-    }
+  
 }

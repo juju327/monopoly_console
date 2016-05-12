@@ -14,8 +14,19 @@ namespace monopoly
             private set;
         }
 
-        public ActionArgent(Boolean gagnerArgent, int s)
+        public bool gagnerArgent
         {
+            get;
+
+            protected set;
+        }
+
+        
+
+        public ActionArgent(bool gagnerArgent, int s)
+        {
+            this.gagnerArgent = gagnerArgent;
+
             if (gagnerArgent)
                 executer = gagner;
             else

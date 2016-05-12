@@ -85,6 +85,30 @@ namespace monopoly
             Argent += somme;
         }
 
+
+
+
+
+
+
+        public void construire()
+        {    
+            
+            
+            Console.WriteLine("Vous possédez les propriétés suivantes :" );
+            
+            for (int i = 0; i < ListeProprietes.Count; i++)
+            {
+
+                Console.WriteLine(ListeProprietes[i].Nom);
+                Console.ReadLine();
+            }
+
+            
+        }
+
+
+        
         public void perdre(int somme)
         {
             if (Argent >= somme) Argent -= somme;

@@ -24,12 +24,27 @@ namespace monopoly
             Pioche = p;
         }
 
+        
+        
+        
         public override void estTombeSur(Joueur j)
         {
             CartePioche c = Pioche.piocher();
             Console.WriteLine("Vous êtes tombé sur la case {0}. Vous piochez la carte :\n {1}", Nom, c.Description);
 
             c.Action.executer(j);
+            
+            if (c.Action is ActionArgent)
+            {  
+                ActionArgent a = (ActionArgent)c.Action;
+                { 
+
+                if (a.gagnerArgent==false)
+                    Pioche.Plateau.parc += a.Somme;
+                    Console.WriteLine("le parc gratuit compte " + Pioche.Plateau.parc + " euros.");
+
+            }
+            }
         }
 
         public static new Object deserialiser(XElement racine)
@@ -37,7 +52,7 @@ namespace monopoly
             CasePioche c;
             int numCase = (int)racine.Element("numero");
             String nomCase = "";
-            String spec = (String)racine.Element("param").Attribute("spec"); //
+            String spec = (String)racine.Element("param").Attribute("spec"); 
 
             ///Action action = null;
 
