@@ -44,20 +44,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
+    <Compile Include="ActionAllerA.cs" />
     <Compile Include="ActionArgent.cs" />
+    <Compile Include="ActionCarteLiberePrison.cs" />
     <Compile Include="ActionDeplacement.cs" />
-    <Compile Include="Animal.cs" />
     <Compile Include="Banque.cs" />
+    <Compile Include="CartePioche.cs" />
+    <Compile Include="CasePioche.cs" />
     <Compile Include="CasePlateau.cs" />
     <Compile Include="CasePropriete.cs" />
     <Compile Include="CaseSpeciale.cs" />
-    <Compile Include="Chat.cs" />
     <Compile Include="Compagnie.cs" />
-    <Compile Include="De.cs" />
+    <Compile Include="Des.cs" />
     <Compile Include="Gare.cs" />
     <Compile Include="Joueur.cs" />
-    <Compile Include="Oiseau.cs" />
     <Compile Include="Partie.cs" />
+    <Compile Include="Pioche.cs" />
     <Compile Include="Plateau.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,6 +67,12 @@
     <Compile Include="Terrain.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="chance.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="communaute.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="plateau.xml" />
     <Content Include="test.xml" />
   </ItemGroup>
