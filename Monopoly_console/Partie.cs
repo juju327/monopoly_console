@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -42,11 +41,11 @@ namespace monopoly
 
         public Partie()
         {
-
             Plateau = new Plateau(this);
             initCartes();
+            initCouleurs();
             Plateau.associerPioches(CartesChance, CartesCommunaute);
-
+            
 
             Plateau.associerPioches(CartesChance, CartesCommunaute);
             Des = new Des();
@@ -59,10 +58,11 @@ namespace monopoly
             XDocument xdoc = XDocument.Load("..\\..\\chance.xml");
 
             CartesChance = new Pioche(Plateau, xdoc.Root);
-
-            xdoc = XDocument.Load("..\\..\\communaute.xml");
+             xdoc = XDocument.Load("..\\..\\communaute.xml");
 
             CartesCommunaute = new Pioche(Plateau, xdoc.Root);
+
+           
         }
 
         private void jouer()
@@ -74,55 +74,90 @@ namespace monopoly
                 {
                     JoueurEnCours = Joueurs[i];
 
-                    Console.Clear();
-                    afficherConsole(i);
-
                     afficherInfos(JoueurEnCours, compteurTour);
-
-
                     int position = JoueurEnCours.CaseActuelle;
-
-                    Console.WriteLine("Veuillez appuyer sur Entrée pour lancer les dés.");
-                    Console.ReadKey();
-                    Des.lancerDes();
-                    int res1 = Des.de1 + Des.de2;
-                    Console.WriteLine("Votre avez obtenu {0} aux dés.", res1);
-
-                    if (position + res1 < 40)
+                    
+                    
+                    
+                    if (compteurTour >= 2 && JoueurEnCours.ListeProprietes.Count>0)
                     {
-                        // à voir qui gère le déplacement : la partie ou le joueur ?
-                        CasePlateau destination = Plateau.getCaseFromNum(res1 + position);
-                        JoueurEnCours.deplacerA(destination, true);
 
-                        //Joueurs[i].CaseActuelle = Joueurs[i].CaseActuelle + res1;
+                        Console.WriteLine("Souhaitez-vous acheter des maisons/hotels pour vos propriétés? (o/n)");
+                        string answer = Console.ReadLine();
+
+                        if (answer == "o")
+                        {
+                           Joueurs[i].construire();
+                        }
+                        else
+                        {
+                            if (answer == "n")
+                            {
+
+                                Console.WriteLine("Vous n'avez pas souhaitez acheter");
+                            }
+
+
+
+
+                        }
+
                     }
+                    
+                        Console.WriteLine("Veuillez appuyer sur Entrée pour lancer les dés.");
+                        Console.ReadKey();
+                        Des.lancerDes();
+                        int res1 = Des.de1 + Des.de2;
+                        Console.WriteLine("Votre avez obtenu {0} aux dés.", res1);
 
-                    else
-                    {
-                        //int temp = 40 - Joueurs[i].CaseActuelle; // le joueur finit son tour sur le plateau
-                        //int res2 = res1 - temp; // calcule le nombre de cases à avancer pour le nouveau tour de plateau
-                        //Joueurs[i].CaseActuelle = 0 + res2;
+                        if (position + res1 < 40)
+                        {
+                            // à voir qui gère le déplacement : la partie ou le joueur ?
+                            CasePlateau destination = Plateau.getCaseFromNum(res1 + position);
+                            JoueurEnCours.deplacerA(destination, true);
 
-                        CasePlateau destination = Plateau.getCaseFromNum(res1 + position - 40);
-                        JoueurEnCours.deplacerA(destination, true);
-                    }
+                            //Joueurs[i].CaseActuelle = Joueurs[i].CaseActuelle + res1;
+                        }
 
-                    CasePlateau caseTombe = Plateau.getCaseFromNum(JoueurEnCours.CaseActuelle);
+                        else
+                        {
+                            //int temp = 40 - Joueurs[i].CaseActuelle; // le joueur finit son tour sur le plateau
+                            //int res2 = res1 - temp; // calcule le nombre de cases à avancer pour le nouveau tour de plateau
+                            //Joueurs[i].CaseActuelle = 0 + res2;
 
-                    caseTombe.estTombeSur(JoueurEnCours);
-                    position = Joueurs[i].CaseActuelle;
-                    int argent = Joueurs[i].Argent;
-                    Console.WriteLine("Position :  {0} --- Solde : {1} ", caseTombe, argent);
-                    Console.ReadLine();
+                            CasePlateau destination = Plateau.getCaseFromNum(res1 + position - 40);
+                            JoueurEnCours.deplacerA(destination, true);
 
-                    Console.Clear();
-                    afficherConsole(i);
-                    Console.WriteLine("Appuyez sur Entrée pour finir votre tour.");
-                    Console.ReadLine();
+                        }
+
+
+                        CasePlateau caseTombe = Plateau.getCaseFromNum(JoueurEnCours.CaseActuelle);
+
+                        caseTombe.estTombeSur(JoueurEnCours);
+                        position = Joueurs[i].CaseActuelle;
+                        int argent = Joueurs[i].Argent;
+                        if (position == 20)
+                        {
+                            argent += Pioche.Plateau.parc;
+                            Console.WriteLine("Postion : Parc gratuit .Vous récupérez le solde du parc gratuit de" + Pioche.Plateau.parc + " \n Solde :" + argent);
+                            Console.ReadLine();
+
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Position :  {0} --- Solde : {1} ", caseTombe, argent);
+
+                            Console.WriteLine("Appuyez sur Entrée pour finir votre tour.");
+                            Console.ReadLine();
+                        }
+
+                    } compteurTour++;
+
                 }
-                compteurTour++;
             }
-        }
+        
+        
 
         private void afficherTitre()
         {
@@ -130,87 +165,15 @@ namespace monopoly
 ************               MONOPOLY           ************");
         }
 
-        private void afficherInfos(Joueur j, int nbTours)
+        private void afficherInfos(Joueur j,int nbTours)
         {
             int position = j.CaseActuelle;
             String nomCase = Plateau.getCaseFromNum(position).Nom;
-            //Console.Clear();
-            //afficherTitre();
+           Console.Clear();
+            afficherTitre();
             Console.WriteLine(@"
-------------    Tour {0} - {1} ------------", nbTours, j.Nom);
+------------    Tour{0} - {1} ------------",nbTours, j.Nom);
             Console.WriteLine("Position :  {0} --- Solde : {1} ", Plateau.getCaseFromNum(position).Nom, j.Argent);
-        }
-
-        private void afficherConsole(int numJoueur)
-        {
-            Console.Write(
-@"
- ____ ____ ____ ____ ____ ____ ____ ____ ____ ____ ____ 
-|DEP |VIOL|COMM|VIOL|IMPO|GARE|CIEL|CHAN|CIEL|CIEL|PRIS|
-|____|____|____|____|____|____|____|____|____|____|____|
-|BLEU|                                            |ROSE|
-|____|     * * *        MONOPOLY       * * *      |____|
-|LUXE|                                            |ELEC|
-|____|                                            |____|
-|BLEU|                                            |ROSE|
-|____|                                            |____|
-|CHAN|                                            |ROSE|
-|____|                                            |____|
-|GARE|                                            |GARE|
-|____|                                            |____|
-|VERT|                                            |ORAN|
-|____|                                            |____|
-|COMM|                                            |COMM| 
-|____|                                            |____|
-|VERT|                                            |ORAN|
-|____|                                            |____|
-|VERT|                                            |ORAN|
-|____|____ ____ ____ ____ ____ ____ ____ ____ ____|____|
-|ALLE|JAUN|EAUX|JAUN|JAUN|GARE|ROUG|ROUG|CHAN|ROUG|PARC|
-|PRIS|____|____|____|____|____|____|____|____|____|____|");
-
-
-            for (int i = 0; i < Joueurs.Count; i++)
-            {
-                int position = Joueurs[i].CaseActuelle;
-                afficherJoueurSurConsole(position, i);
-            }
-
-
-            Console.ReadLine();
-        }
-
-
-        public void afficherJoueurSurConsole(int position, int numJoueur)
-        {
-            // 1ère ligne du plateau
-            if (position < 11)
-            {
-                Console.CursorTop = 3;
-                Console.CursorLeft = position == 0 ? 2 : 5 * (position+1) - 3;
-            }
-            // colonne de droite
-            else if (position > 10 && position < 21)
-            {
-                Console.CursorTop = 3 + (position - 10) * 2;
-                Console.CursorLeft = 52;
-            }
-            // ligne du bas
-            else if (position > 20 && position < 31)
-            {
-                Console.CursorTop = 23;
-                Console.CursorLeft = position == 30 ? 2 : 2 + (30 - position) * 5;
-            }
-            // ligne de gauche pos < 39
-            else
-            {
-                Console.CursorTop = 3 + (40 - position) * 2;
-                Console.CursorLeft = 3;
-            }
-
-            Console.WriteLine(numJoueur);
-            Console.CursorLeft = 0;
-            Console.CursorTop = 7;
         }
 
 
@@ -229,7 +192,7 @@ namespace monopoly
 
         private void initJoueurs()
         {
-            Console.Clear();
+            //Console.Clear();
             afficherTitre();
             int[] de = new int[100];
             Joueurs = new List<Joueur>();
@@ -262,7 +225,7 @@ namespace monopoly
             }
 
             /* Gerer les personnes qui font deu fois le même résultat !
-
+                
               if (resultats.ContainsValue(res))    
               {
                   Console.WriteLine("égalité");
@@ -298,6 +261,22 @@ namespace monopoly
 
         }
 
+
+        public void initCouleurs()
+        {
+            Couleur Violet = new Couleur(0,100,500);
+            Couleur BleuCiel = new Couleur(1,50,450);
+            Couleur Rose = new Couleur(2, 50, 450);
+            Couleur Orange = new Couleur(3, 100, 500);
+            Couleur Rouge = new Couleur(4, 150, 750);
+            Couleur Jaune = new Couleur(5, 150, 750);
+            Couleur Vert = new Couleur(6, 200, 1000);
+            Couleur Bleu = new Couleur(7, 200, 1000);
+
+
+
+
+        }
 
         public void serialiser(XElement racine)
         {
