@@ -24,7 +24,6 @@ namespace monopoly
         {
             Plateau = p;
             initCartes(racine);
-            melanger();
         }
 
         public CartePioche piocher()
@@ -43,9 +42,6 @@ namespace monopoly
         public void melanger()
         {
 
-            var random = new Random();
-            Cartes.Sort((x, y) => random.Next(-1, 2));
-           
         }
 
         public static new Object deserialiser(XElement racine)

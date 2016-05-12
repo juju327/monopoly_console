@@ -9,6 +9,8 @@ namespace monopoly
     {
         static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.White;
             Partie partie = new Partie();
 
             //partie.initJoueurs();

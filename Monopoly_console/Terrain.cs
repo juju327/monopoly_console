@@ -55,7 +55,7 @@ namespace monopoly
             Loyers = new int[6];
             if (loyers.Count() == Loyers.Count())
                 Loyers = loyers;
-            //Couleur = new Couleur;
+            Couleur = (Couleur)c;
             PrixAchat = prixAchat;
         }
 
@@ -120,7 +120,7 @@ namespace monopoly
             param.SetAttributeValue("type", "propriete");
             param.SetAttributeValue("spec", "terrain");
             XElement nom = new XElement("nom", Nom);
-            XElement couleur = new XElement("couleur", Couleur.Numero);
+            XElement couleur = new XElement("couleur", (int)Couleur);
             XElement achat = new XElement("achat", PrixAchat);
             XElement loyers = new XElement("loyer");
             for (int i = 0; i < 6; i++)
@@ -142,6 +142,7 @@ namespace monopoly
             int prixAchat = (int)racine.Element("achat");
 
             int[] loyers = new int[6];
+
             var loyersXML = from e in racine.Descendants("loyer").Elements()
                             select e;
             int j = 0;
@@ -151,9 +152,20 @@ namespace monopoly
                 j++;
             }
 
+
             return new Terrain(nom, numCase, loyers, couleur, prixAchat);
         }
     }
 
-  
+    enum Couleur
+    {
+        Rose,
+        BleuCiel,
+        Violet,
+        Orange,
+        Rouge,
+        Jaune,
+        Vert,
+        Bleu
+    }
 }

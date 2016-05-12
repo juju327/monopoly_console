@@ -58,6 +58,7 @@ namespace monopoly
                     {
                         j.ListeProprietes.Add(this);
                         j.perdre(PrixAchat);
+                        Proprietaire = j;
                         Console.WriteLine("Vous avez acheté {0} pour {1} ! ", Nom, PrixAchat);
                     }
                     else
