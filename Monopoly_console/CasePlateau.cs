@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace monopoly
 {
-    public abstract class CasePlateau : Serialisable
+    abstract class CasePlateau : Serialisable
     {
         public String Nom
         {
@@ -26,7 +26,9 @@ namespace monopoly
             Numero = num;
         }
 
-        public abstract void estTombeSur(Joueur j);
+        public virtual void estTombeSur(Partie partie)
+        {
+        }
 
         public override string ToString()
         {

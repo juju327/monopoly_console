@@ -25,7 +25,7 @@ namespace monopoly
             XElement c = new XElement("case");
 
             //c.Add();
-            Console.WriteLine(c);
+            //MaConsole.ecrireLigne(c);
             //racine.Add(c);
         }
 
@@ -59,28 +59,40 @@ namespace monopoly
                     gagnerArgent = true;
                     action = new ActionArgent(gagnerArgent, somme);
                     break;
-                // case prise : on ne se déplace pas, on ne gagne pas d'argent
-                case "prison":
-                    somme = 0;
-                    gagnerArgent = true;
-                    action = new ActionArgent(gagnerArgent, somme);
-
-                    // TODO voir si on a pas une meilleure façon de faire ça
-                    break;
-                case "allezprison":
-                    // TODO gérer les déplacements sur une case spécifique
-                    action = new ActionAllerA(null, false);
-                    break;
             }
 
             CaseSpeciale c = new CaseSpeciale(nomCase, numCase, action);
             return c;
         }
 
-        public override void estTombeSur(Joueur j)
+        public override void estTombeSur(Partie partie)
         {
-            Console.WriteLine("Vous êtes tombé sur la case {0}", Nom);
-            this.ActionAEffectuer.executer(j);
+            Joueur j = partie.JoueurEnCours;
+            if (Numero == 20)
+            {
+                j.gagner(Pioche.Plateau.ParcGratuit);
+                MaConsole.ecrireLigne("Vous récupérez le solde du parc gratuit de " + Pioche.Plateau.ParcGratuit + "€ !");
+            }
+
+
+            MaConsole.ecrireLigne("Vous êtes tombé sur la case {0}", Nom);
+            MaConsole.hauteurLigne += 2;
+            if (Numero == 20)
+            {
+                j.gagner(Pioche.Plateau.ParcGratuit);
+                Pioche.Plateau.ParcGratuit = 0;
+                MaConsole.ecrireLigne("Vous récupérez le solde du parc gratuit de " + Pioche.Plateau.ParcGratuit + "€ !");
+            }
+            else if (Numero == 30)
+            {
+                j.EstEnPrison = true;
+                MaConsole.ecrireLigne("Vous allez en prison ! Vous ne pourrez plus jouer pendant 3 tours...");
+                MaConsole.ecrireLigne("Pour sortir de prison, vous pouvez tenter de faire un double aux dés");
+                MaConsole.ecrireLigne("ou utiliser une de vos éventuelles cartes \"Libéré de Prison\" !");
+                MaConsole.ecrireLigne("Au bout de 3 tours, vous sortez de prison et pouvez jouer normalement.");
+            }
+            else
+                this.ActionAEffectuer.executer(partie);
         }
     }
 }

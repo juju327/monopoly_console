@@ -16,33 +16,33 @@ namespace monopoly
             get;
             private set;
         }
-        public Partie Partie { get; private set; }
+
+        public Partie PartieAssociee
+        {
+            get;
+            private set;
+        }
 
 
         //permet de gérer le parc gratuit
-        public int parc
+        public int ParcGratuit
         {
             get;
             set;
-
         }
-
-       
 
         public void initPlateau()
         {
             XDocument xdoc = XDocument.Load("..\\..\\plateau.xml");
 
-            //Console.WriteLine(xdoc.Root);
             Cases = (List<CasePlateau>)Plateau.deserialiser(xdoc.Root);
         }
 
         public Plateau(Partie p)
         {
-            parc = 0;
-            Partie = p;
+            ParcGratuit = 0;
+            PartieAssociee = p;
             Cases = new List<CasePlateau>();
-            initPlateau();
         }
 
         public CasePlateau getCaseFromNum(int numero)
@@ -53,9 +53,6 @@ namespace monopoly
             }
             return null;
         }
-
-
-        
 
         public void associerPioches(Pioche chance, Pioche communaute)
         {
@@ -78,8 +75,6 @@ namespace monopoly
         {
             // création d'une série de cases
             XElement cases = new XElement("cases");
-
-
 
             // chaque case se sérialise selon sa propre méthode
             foreach (CasePlateau c in Cases)
@@ -161,11 +156,13 @@ namespace monopoly
                     case "argent":
                         c = (CaseSpeciale)CaseSpeciale.deserialiser(x);
                         break;
-                    case "allezprison":
-                        c = (CaseSpeciale)CaseSpeciale.deserialiser(x);
-                        break;
                     case "prison":
-                        c = (CaseSpeciale)CaseSpeciale.deserialiser(x);
+                        ActionPartie act = new ActionPartie("prison");
+                        c = new CaseSpeciale((String)x.Element("nom"), (int)x.Element("numero"), act);
+                        break;
+                    case "allezprison":
+                        ActionAllerA action = new ActionAllerA(cases[10], false);
+                        c = new CaseSpeciale((String)x.Element("nom"), (int)x.Element("numero"), action);
                         break;
 
                 }

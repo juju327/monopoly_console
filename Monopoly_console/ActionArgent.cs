@@ -7,41 +7,31 @@ namespace monopoly
 {
     class ActionArgent : Action
     {
+        private int Somme;
 
-        public int Somme
-        {
-            get;
-            private set;
-        }
-
-        public bool gagnerArgent
-        {
-            get;
-
-            protected set;
-        }
-
-        
+        private bool GagnerArgent;
 
         public ActionArgent(bool gagnerArgent, int s)
         {
-            this.gagnerArgent = gagnerArgent;
-
-            if (gagnerArgent)
-                executer = gagner;
-            else
-                executer = perdre;
+            GagnerArgent = gagnerArgent;
             Somme = s;
         }
 
-        public void gagner(Joueur j)
+        public override void executer(Partie p)
         {
-            j.gagner(Somme);
-        }
+            if (GagnerArgent)
+            {
+                MaConsole.ecrireLigne("Vous gagnez {0}€ !", Somme);
+                p.JoueurEnCours.gagner(Somme);
+            }
+            else
+            {
+                MaConsole.ecrireLigne("Vous perdez {0}€ ", Somme);
+                p.JoueurEnCours.perdre(Somme);
 
-        public void perdre(Joueur j)
-        {
-            j.perdre(Somme);
+                p.Plateau.ParcGratuit += Somme;
+                MaConsole.ecrireLigne("Le parc gratuit compte désormais {0} € !", p.Plateau.ParcGratuit);
+            }
         }
     }
 }

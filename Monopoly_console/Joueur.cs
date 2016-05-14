@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace monopoly
 {
-    public class Joueur
+    class Joueur
     {
         public string Nom
         {
@@ -29,6 +29,30 @@ namespace monopoly
             private set;
         }
 
+        public int NbTourPrison
+        {
+            get;
+            private set;
+        }
+
+        public void faireReparations(int prixParMaison, int prixParHotel)
+        {
+            int totalAPayer = 0;
+            foreach (CasePropriete caseProp in ListeProprietes)
+                if (caseProp is Terrain)
+                {
+                    Terrain t = caseProp as Terrain;
+                    totalAPayer += t.NbMaisonsConstruites * prixParMaison + t.NbHotelsConstruits * prixParHotel;
+                }
+            perdre(totalAPayer);
+        }
+
+        public bool EstEnPrison
+        {
+            get;
+            set;
+        }
+
         public void ajouterCarteLiberePrison()
         {
             NbCarteLiberation++;
@@ -38,19 +62,6 @@ namespace monopoly
         {
             NbCarteLiberation--;
         }
-
-        public int NbTourPrison
-        {
-            get;
-            private set;
-        }
-
-        public bool PossesionTerrainCouleur
-        {
-            get;
-            set;
-        }
-
 
         public List<CasePropriete> ListeProprietes
         {
@@ -66,10 +77,8 @@ namespace monopoly
             NbCarteLiberation = 0;
             NbTourPrison = 0;
             ListeProprietes = new List<CasePropriete>();
-            PossesionTerrainCouleur=false;
         }
 
-        
         public void deplacerA(CasePlateau dest, bool passerParCaseDepart)
         {
             CaseActuelle = dest.Numero;
@@ -85,8 +94,7 @@ namespace monopoly
 
         public void deplacerDe(int nbCases)
         {
-           
-            CaseActuelle=CaseActuelle-nbCases;
+            throw new System.NotImplementedException();
         }
 
         public void gagner(int somme)
@@ -94,41 +102,17 @@ namespace monopoly
             Argent += somme;
         }
 
-
-
-        public void VerificationCouleur() //fonction qui vérifie si un joueur possède tous les terrains d'une même
-        {
-            ;
-        }
-
-
         public void construire()
-        {    
-            
-            
-            Console.WriteLine("Vous possédez les propriétés suivantes :" );
-            
+        {
+            MaConsole.ecrireLigne("Vous possédez les propriétés suivantes :");
+
             for (int i = 0; i < ListeProprietes.Count; i++)
             {
-
-                Console.WriteLine(ListeProprietes[i].Nom);
-
-                                
-
-
+                MaConsole.ecrireLigne(ListeProprietes[i].Nom);
+                MaConsole.lireLigne();
             }
-            Console.WriteLine("Choississez la couleur sur laquelle vous souhaitez ajouter des maisons");
-            int couleur = int.Parse(Console.ReadLine());
-            Console.WriteLine(" Sélectionner le nombre de maison que vous souhaitez ajouter \n Appuyer sur 5 si vous souhaitez ajouter un hôtel.");
-            int nombre = int.Parse(Console.ReadLine());
-
-           
-
-            
         }
 
-
-        
         public void perdre(int somme)
         {
             if (Argent >= somme) Argent -= somme;

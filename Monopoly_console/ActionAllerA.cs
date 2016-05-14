@@ -6,34 +6,26 @@ using System.Text;
 namespace monopoly
 {
     // une classe qui gère les déplacements jusqu'à une certaine case
-    public class ActionAllerA : Action
+    class ActionAllerA : Action
     {
         // la case visée
-        public CasePlateau Destination
-        {
-            get;
-            private set;
-        }
+        private CasePlateau destination;
 
         // true si on passe par la case départ
-        public bool PasserParDepart
-        {
-            get;
-            private set;
-        }
+        private bool passerParDepart;
 
         // constructeur
         public ActionAllerA(CasePlateau dest, bool passerParDepart)
         {
-            Destination = dest;
-            PasserParDepart = passerParDepart;
-            executer = allerA;
+            destination = dest;
+            this.passerParDepart = passerParDepart;
         }
 
         // la méthode à exécuter
-        private void allerA(Joueur j)
+        public override void executer(Partie p)
         {
-            j.deplacerA(Destination, PasserParDepart);
+            p.JoueurEnCours.deplacerA(destination, passerParDepart);
+            destination.estTombeSur(p);
         }
     }
 }

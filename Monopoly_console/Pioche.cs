@@ -42,10 +42,8 @@ namespace monopoly
 
         public void melanger()
         {
-
             var random = new Random();
             Cartes.Sort((x, y) => random.Next(-1, 2));
-           
         }
 
         public static new Object deserialiser(XElement racine)
@@ -64,11 +62,9 @@ namespace monopoly
 
                 String type = (String)x.Attribute("type");
                 String spec = (String)x.Attribute("spec");
-
                 String nom = (String)x.Element("nom");
-                Action action;
-                //Console.WriteLine(nom);
-                CartePioche c = null;
+
+                Action action = null;
 
                 switch (type)
                 {
@@ -80,55 +76,39 @@ namespace monopoly
                         else gagnerArgent = false;
 
                         action = new ActionArgent(gagnerArgent, somme);
-                        c = new CartePioche(action, nom, Plateau);
                         break;
                     case "speciale":
                         if (spec == "reparations")
-                        {
-                            // 25 M  / 100 H
-                        }
+                            action = new ActionReparations(25, 100);
                         else if (spec == "reparations_voirie")
-                        {
-                            // 40 M / 115 H
-                        }
+                            action = new ActionReparations(40, 115);
                         else if (spec == "prison")
-                        {
                             action = new ActionCarteLiberePrison(true);
-                            c = new CartePioche(action, nom, Plateau);
-                        }
                         else if (spec == "anniversaire")
-                        {
-                            //action = new Action();
-                            //action.executer = Plateau.Partie.anniversaire;
-                        }
+                            action = new ActionPartie("anniversaire");
                         else if (spec == "payer_ou_tirer")
-                        {
+                            action = new ActionPartie("payer_ou_tirer");
 
-                        }
                         break;
                     case "deplacement":
                         // soit le numero d'une case, soit un nombre de case à se déplacer
                         int num = (int)x.Element("param");
-                        Action act = null;
 
                         if (spec == "destination")
                         {
                             CasePlateau destination = Plateau.getCaseFromNum(num);
                             //  si c'est la case prison la direction, on ne passe pas par la case depart !
                             bool passerParDepart = num == 10 ? false : true;
-                            act = new ActionAllerA(destination, passerParDepart);
+                            action = new ActionAllerA(destination, passerParDepart);
                         }
                         else if (spec == "nbcases")
-                        {
-                            act = new ActionDeplacement(num);
-                        }
 
-                        c = new CartePioche(act, nom, Plateau);
+                            action = new ActionDeplacement(num);
                         break;
                 }
 
+                CartePioche c = new CartePioche(action, nom, Plateau);
                 list.Add(c);
-
             }
             return list;
         }

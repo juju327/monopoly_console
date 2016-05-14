@@ -5,7 +5,6 @@ using System.Text;
 
 namespace monopoly
 {
-
     class Des
     {
 

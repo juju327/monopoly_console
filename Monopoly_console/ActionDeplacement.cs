@@ -9,24 +9,19 @@ namespace monopoly
     class ActionDeplacement : Action
     {
         // le nombre de cases à bouger
-        public int NbCases
-        {
-            get;
-            private set;
-        }
+        private int nbCases;
 
         // le constructeur qui initialise la méthode à exécuter
         // et le nombre de cases
         public ActionDeplacement(int nb)
         {
-            executer = deplacerDeNbCases;
-            NbCases = nb;
+            nbCases = nb;
         }
 
         // la méthode à exécuter
-        private void deplacerDeNbCases(Joueur j)
+        public override void executer(Partie p)
         {
-            j.deplacerDe(NbCases);
+            p.JoueurEnCours.deplacerDe(nbCases);
         }
 
     }

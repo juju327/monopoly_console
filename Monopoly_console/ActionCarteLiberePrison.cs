@@ -7,25 +7,22 @@ namespace monopoly
 {
     class ActionCarteLiberePrison : Action
     {
+        private bool carteSupplementaire;
+
         // le constructeur qui initialise la méthode à exécuter
         // et le nombre de cases
         public ActionCarteLiberePrison(bool carteSupplementaire)
         {
+            this.carteSupplementaire = carteSupplementaire;
+        }
+
+        public override void executer(Partie p)
+        {
             if (carteSupplementaire)
-                executer = ajouterCarte;
+                p.JoueurEnCours.ajouterCarteLiberePrison();
             else
-                executer = utiliserCarte;
-        }
+                p.JoueurEnCours.utiliserCarteLiberePrison();
 
-        // la méthode à exécuter
-        private void ajouterCarte(Joueur j)
-        {
-            j.ajouterCarteLiberePrison();
-        }
-
-        private void utiliserCarte(Joueur j)
-        {
-            j.utiliserCarteLiberePrison();
         }
     }
 }
