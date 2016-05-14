@@ -45,6 +45,13 @@ namespace monopoly
             private set;
         }
 
+        public bool PossesionTerrainCouleur
+        {
+            get;
+            set;
+        }
+
+
         public List<CasePropriete> ListeProprietes
         {
             get;
@@ -59,9 +66,10 @@ namespace monopoly
             NbCarteLiberation = 0;
             NbTourPrison = 0;
             ListeProprietes = new List<CasePropriete>();
+            PossesionTerrainCouleur=false;
         }
 
-
+        
         public void deplacerA(CasePlateau dest, bool passerParCaseDepart)
         {
             CaseActuelle = dest.Numero;
@@ -77,7 +85,8 @@ namespace monopoly
 
         public void deplacerDe(int nbCases)
         {
-            throw new System.NotImplementedException();
+           
+            CaseActuelle=CaseActuelle-nbCases;
         }
 
         public void gagner(int somme)
@@ -87,8 +96,10 @@ namespace monopoly
 
 
 
-
-
+        public void VerificationCouleur() //fonction qui vérifie si un joueur possède tous les terrains d'une même
+        {
+            ;
+        }
 
 
         public void construire()
@@ -101,8 +112,17 @@ namespace monopoly
             {
 
                 Console.WriteLine(ListeProprietes[i].Nom);
-                Console.ReadLine();
+
+                                
+
+
             }
+            Console.WriteLine("Choississez la couleur sur laquelle vous souhaitez ajouter des maisons");
+            int couleur = int.Parse(Console.ReadLine());
+            Console.WriteLine(" Sélectionner le nombre de maison que vous souhaitez ajouter \n Appuyer sur 5 si vous souhaitez ajouter un hôtel.");
+            int nombre = int.Parse(Console.ReadLine());
+
+           
 
             
         }
