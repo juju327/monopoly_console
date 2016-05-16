@@ -30,7 +30,7 @@ namespace monopoly
                 p.JoueurEnCours.perdre(Somme);
 
                 p.Plateau.ParcGratuit += Somme;
-                MaConsole.ecrireLigne("Le parc gratuit compte désormais {0} € !", p.Plateau.ParcGratuit);
+                MaConsole.ecrireLigne("Le parc gratuit compte désormais {0}€ !", p.Plateau.ParcGratuit);
             }
         }
     }

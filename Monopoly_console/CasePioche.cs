@@ -28,8 +28,12 @@ namespace monopoly
         {
             CartePioche c = Pioche.piocher();
 
-            MaConsole.ecrireLigne("Vous êtes tombé sur la case {0}. Vous piochez la carte :", Nom);
+            MaConsole.ecrireLigne("Vous êtes tombé sur la case");
+            MaConsole.ecrireLigne(" > {0}.", Nom);
+            MaConsole.ecrireLigne("Vous piochez la carte :");
+            MaConsole.hauteurLigne++;
             MaConsole.ecrireLigne(c.Description);
+            MaConsole.hauteurLigne++;
 
             c.Action.executer(partie);
         }
@@ -37,6 +41,8 @@ namespace monopoly
         public static new Object deserialiser(XElement racine)
         {
             CasePioche c;
+            // nom des cases spéciales
+
             int numCase = (int)racine.Element("numero");
             String nomCase = "";
             String spec = (String)racine.Element("param").Attribute("spec");

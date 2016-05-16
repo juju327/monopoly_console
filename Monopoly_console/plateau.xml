@@ -15,12 +15,42 @@
     <compagnie>
       <achat>150</achat>
     </compagnie>
-    <chance>
-      <nom>Chance</nom>
-    </chance>
-    <communaute>
-      <nom>Caisse de communauté</nom>
-    </communaute>
+   
+    <couleurs>
+      <couleur numero="0" nom="Violet">
+        <maisons>50</maisons>
+        <hotel>450</hotel>
+      </couleur>
+      <couleur numero="1" nom="Bleu Ciel">
+        <maisons>50</maisons>
+        <hotel>450</hotel>
+      </couleur>
+      <couleur numero="2" nom="Rose">
+        <maisons>100</maisons>
+        <hotel>500</hotel>
+      </couleur>
+      <couleur numero="3" nom="Orange">
+        <maisons>100</maisons>
+        <hotel>500</hotel>
+      </couleur>
+      <couleur numero="4" nom="Rouge">
+        <maisons>150</maisons>
+        <hotel>750</hotel>
+      </couleur>
+      <couleur numero="5" nom="Jaune">
+        <maisons>150</maisons>
+        <hotel>750</hotel>
+      </couleur>
+      <couleur numero="6" nom="Vert">
+        <maisons>200</maisons>
+        <hotel>1000</hotel>
+      </couleur>
+      <couleur numero="7" nom="Bleu Foncé">
+        <maisons>200</maisons>
+        <hotel>1000</hotel>
+      </couleur>
+    </couleurs>
+
   </parametres>
 
   <cases>

@@ -92,6 +92,20 @@ namespace monopoly
                 gagner(200);
         }
 
+        public void allerEnPrison()
+        {
+            EstEnPrison = true;
+            NbTourPrison = 0;
+        }
+
+        public void passerUnTourPrison()
+        {
+            NbTourPrison++;
+            if (NbTourPrison == 3)
+                sortirPrison();
+
+        }
+
         public void deplacerDe(int nbCases)
         {
             throw new System.NotImplementedException();
@@ -102,21 +116,159 @@ namespace monopoly
             Argent += somme;
         }
 
+        public bool aTerrainConstructible()
+        {
+            foreach (CasePropriete propriete in ListeProprietes)
+                if (propriete is Terrain)
+                {
+                    Terrain terrain = propriete as Terrain;
+                    if (terrain.estConstructible())
+                        return true;
+                }
+            return false;
+        }
+
         public void construire()
         {
-            MaConsole.ecrireLigne("Vous possédez les propriétés suivantes :");
+            MaConsole.ecrireLigneSansSauver("Vous possédez les propriétés constructibles suivantes :");
 
-            for (int i = 0; i < ListeProprietes.Count; i++)
+            // pour l'affichage et le choix de l'utilisateur
+            int nbProp = 1;
+            List<Terrain> terrainsConstructibles = new List<Terrain>();
+            foreach (CasePropriete propriete in ListeProprietes)
             {
-                MaConsole.ecrireLigne(ListeProprietes[i].Nom);
-                MaConsole.lireLigne();
+                if (propriete is Terrain)
+                {
+                    Terrain terrain = propriete as Terrain;
+                    if (terrain.estConstructible())
+                    {
+                        terrainsConstructibles.Add(terrain);
+                        MaConsole.ecrireLigneSansSauver("{0} - {1} ({2})", nbProp, terrain.Nom, terrain.Couleur.Nom);
+                        String constructions = "   -> {0} maisons ({1}€/M) et {2} hôtel({3}€/H) construits";
+                        MaConsole.ecrireLigneSansSauver(constructions, terrain.NbMaisonsConstruites, terrain.Couleur.prixMaison,
+                            terrain.NbHotelsConstruits, terrain.Couleur.prixHotel);
+                        nbProp++;
+                    }
+                }
             }
+
+            MaConsole.ecrireLigneSansSauver("Choisissez la propriété sur laquelle vous souhaitez ");
+            MaConsole.ecrireLigneSansSauver("construire en entrant son numéro : ");
+            int nb = int.Parse(MaConsole.lireLigne());
+            MaConsole.hauteurLigne++;
+
+            Terrain aConstruire = terrainsConstructibles[nb - 1];
+            if (aConstruire.peutConstruireMaison())
+            {
+                MaConsole.ecrireLigne("Vous avez acheté une maison pour {0}€ sur le terrain ", aConstruire.Couleur.prixMaison);
+                MaConsole.ecrireLigne("{0}", aConstruire.Nom);
+                perdre(aConstruire.Couleur.prixMaison);
+                aConstruire.construireMaison();
+            }
+            else if (aConstruire.peutConstruireHotel())
+            {
+                MaConsole.ecrireLigne("Vous avez acheté un hôtel pour {0}€ sur le terrain ", aConstruire.Couleur.prixHotel);
+                MaConsole.ecrireLigne("{0}", aConstruire.Nom);
+                perdre(aConstruire.Couleur.prixHotel);
+                aConstruire.construireHotel();
+            }
+            else
+            {
+                MaConsole.ecrireLigne("Vous ne pouvez rien construire sur cette propriété");
+                MaConsole.ecrireLigne("pour l'instant.");
+            }
+
         }
 
         public void perdre(int somme)
         {
             if (Argent >= somme) Argent -= somme;
             else hypothequer(somme);
+        }
+
+        public void deplacer(int resultatsDes, Plateau plateau)
+        {
+            MaConsole.ecrireLigne("Veuillez appuyer sur Entrée pour lancer les dés.");
+            MaConsole.lireLigne();
+
+            MaConsole.ecrireLigne("Votre avez obtenu {0} aux dés.", resultatsDes);
+
+            // on fait avancer le joueur
+            int position = CaseActuelle;
+            if (position + resultatsDes < plateau.Cases.Count)
+            {
+                CasePlateau destination = plateau.getCaseFromNum(resultatsDes + position);
+                deplacerA(destination, true);
+            }
+            else
+            {
+                CasePlateau destination = plateau.getCaseFromNum(resultatsDes + position - plateau.Cases.Count);
+                deplacerA(destination, true);
+            }
+        }
+
+        public void jouerTourPrison(Des des)
+        {
+            passerUnTourPrison();
+            if (EstEnPrison)
+            {
+                MaConsole.ecrireLigne("Vous êtes en prison depuis {0} tours !", NbTourPrison);
+                MaConsole.ecrireLigne("Pour sortir de prison, vous pouvez tenter de ");
+                MaConsole.ecrireLigne("faire un double aux dés ou utiliser une de ");
+                MaConsole.ecrireLigne("vos éventuelles cartes \"Libéré de Prison\" !");
+                MaConsole.ecrireLigne("Au bout de 3 tours, vous sortez de prison et ");
+                MaConsole.ecrireLigne("pouvez jouer normalement.");
+                MaConsole.ecrireLigne("Entrez 1 pour utiliser une carte \"Libéré de Prison\"");
+                MaConsole.ecrireLigne("Entrez 2 pour tenter de sortir avec un double.");
+
+                int reponse = int.Parse(MaConsole.lireLigne());
+                if (reponse == 1 && NbCarteLiberation > 0)
+                {
+                    utiliserCarteLiberePrison();
+                    MaConsole.ecrireLigne("Vous utilisez une carte \"Libéré de Prison\" !");
+                    sortirPrison();
+                }
+                else if (reponse == 1 && NbCarteLiberation == 0)
+                {
+                    MaConsole.ecrireLigne("Vous n'avez pas de carte \"Libéré de Prison\".");
+                }
+
+                // s'il n'a pas de carte, il tire aussi aux dés !
+                if (reponse == 2 || (reponse == 1 && NbCarteLiberation == 0))
+                {
+                    MaConsole.ecrireLigne("Vous lancez les dés pour faire un double...");
+                    des.lancerDes();
+                    MaConsole.ecrireLigne("Vous avez fait {0} et {1} aux dés", des.de1, des.de2);
+                    if (des.isDouble())
+                    {
+                        MaConsole.ecrireLigne("Vous avez fait un double !");
+                        MaConsole.ecrireLigne("Vous sortez de prison !");
+                        sortirPrison();
+                    }
+                    else
+                    {
+                        MaConsole.ecrireLigne("Dommage... Pas de double...");
+                        MaConsole.ecrireLigne("Il vous reste {0} tours à passer en prison !", 3 - NbTourPrison);
+                    }
+                }
+            }
+            else
+            {
+                MaConsole.ecrireLigne("Vous avez passé 3 tours en prison !");
+                MaConsole.ecrireLigne("Ouste ! Retour à la vraie vie !");
+            }
+        }
+
+        public void sortirPrison()
+        {
+            EstEnPrison = false;
+            NbTourPrison = 0;
+        }
+
+        public void entrerPrison()
+        {
+            EstEnPrison = true;
+            NbTourPrison = 0;
         }
 
         // tente d'hypothéquer pour rassembler la somme en paramètre

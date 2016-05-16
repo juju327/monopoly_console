@@ -14,7 +14,6 @@ namespace monopoly
             private set;
         }
 
-
         public int de2
         {
             get;
@@ -32,6 +31,11 @@ namespace monopoly
             Rnd = new Random();
             de1 = 0;
             de2 = 0;
+        }
+
+        public bool isDouble()
+        {
+            return de1 == de2;
         }
 
         public void lancerDes()

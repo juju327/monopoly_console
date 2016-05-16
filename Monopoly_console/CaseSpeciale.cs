@@ -59,6 +59,9 @@ namespace monopoly
                     gagnerArgent = true;
                     action = new ActionArgent(gagnerArgent, somme);
                     break;
+                case "prison":
+                    action = new ActionAllerA(30, false);
+                    break;
             }
 
             CaseSpeciale c = new CaseSpeciale(nomCase, numCase, action);

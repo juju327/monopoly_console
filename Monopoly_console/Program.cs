@@ -21,6 +21,7 @@ namespace monopoly
             Console.WindowHeight = Console.LargestWindowHeight - 4;
 
             //Console.WindowLeft = 0;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             Console.Clear();
 

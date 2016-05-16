@@ -54,6 +54,11 @@ namespace monopoly
             return null;
         }
 
+        public bool appartientAuMemeProprio()
+        {
+            return false;
+        }
+
         public void associerPioches(Pioche chance, Pioche communaute)
         {
             for (int i = 0; i < Cases.Count; i++)
@@ -105,6 +110,18 @@ namespace monopoly
             int achatCompagnie = (int)parametres.Element("compagnie").Element("achat");
             Compagnie.PrixAchatCompagnie = achatCompagnie;
 
+            // couleurs à faire avant la création des terrains !
+            var couleurs = from e in parametres.Element("couleurs").Elements()
+                           select e;
+
+            Couleur.Couleurs = new List<Couleur>();
+            foreach (XElement x in couleurs)
+            {
+
+                Couleur c = (Couleur)Couleur.deserialiser(x);
+                Couleur.Couleurs.Add(c);
+            }
+
 
             // loyers des gares
             int[] loyersGare = new int[4];
@@ -121,15 +138,11 @@ namespace monopoly
             Gare.setLoyers(loyersGare);
 
 
-            // nom des cases spéciales
-            String nomCommunaute = (String)parametres.Element("communaute").Element("nom");
-            String nomChance = (String)parametres.Element("chance").Element("nom");
-
             //Run query
             // on récupère tous les éléments case du document
             var result = from e in racine.Descendants("cases").Elements()
                          select e;
-
+            int couleur = 0;
 
             foreach (XElement x in result)
             {
@@ -139,6 +152,7 @@ namespace monopoly
                 switch (spec)
                 {
                     case "terrain":
+                        couleur = (int)x.Element("couleur");
                         c = (Terrain)Terrain.deserialiser(x);
                         break;
                     case "communaute":

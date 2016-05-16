@@ -39,7 +39,7 @@ namespace monopoly
             private set;
         }
 
-        public readonly int nbCases = 40;
+        private int nbCasesPlateau = 40;
 
         public Joueur JoueurEnCours
         {
@@ -54,7 +54,7 @@ namespace monopoly
             Plateau.initPlateau();
 
             // problème lors de la désérialisation
-            if (Plateau.Cases.Count != nbCases)
+            if (Plateau.Cases.Count != nbCasesPlateau)
             {
                 Console.WriteLine("Erreur lors de la lecture du fichier XML : nombre d'éléments incorrects.");
                 Console.WriteLine("Arrêt du programme...");
@@ -63,7 +63,7 @@ namespace monopoly
             else {
 
                 initCartes();
-                initCouleurs();
+                //initCouleurs();
 
                 Plateau.associerPioches(CartesChance, CartesCommunaute);
 
@@ -99,52 +99,54 @@ namespace monopoly
                     Console.Clear();
 
                     // affichage du plateau, des joueurs, et des infos du joueur en cours
-                    MaConsole.afficherConsole(Joueurs, JoueurEnCours);
+                    MaConsole.afficherConsole(Joueurs, JoueurEnCours, Plateau);
 
                     // affichage du nombre de tours joués et du joueur en cours
                     MaConsole.hauteurLigne = 0;
-                    MaConsole.ecrireLigne(" * * Tour{0} - à {1} de jouer ! * *", compteurTour, JoueurEnCours.Nom);
+                    MaConsole.ecrireLigne(" * * Tour {0} - à {1} de jouer ! * *", compteurTour, JoueurEnCours.Nom);
+                    MaConsole.ecrireLigne("");
 
                     //MaConsole.clearCentre();
 
                     // avant de commencer à jouer, on demande s'il veut acheter
-                    if (compteurTour >= 2 && JoueurEnCours.ListeProprietes.Count > 0)
+                    if (JoueurEnCours.aTerrainConstructible())
                     {
-                        MaConsole.ecrireLigne("Souhaitez-vous acheter des maisons/hotels pour vos propriétés? (o/n)");
-                        string answer = MaConsole.lireLigne();
+                        bool continuer = true;
+                        do
+                        {
+                            MaConsole.ecrireLigneSansSauver("Vous avez des propriétés constructibles.");
+                            MaConsole.ecrireLigneSansSauver("Souhaitez-vous construire sur vos propriétés ? (o/n)");
+                            if (MaConsole.lireLigne() == "o")
+                            {
+                                joueur.construire();
+                                Console.Clear();
+                                //MaConsole.consoleCentrale;
+                                MaConsole.hauteurLigne = 0;
+                                // on enlève les infos superflues pour ne pas surcharger la console
 
-                        if (answer == "o")
-                            joueur.construire();
-
-                        else
-                            MaConsole.ecrireLigne("Vous n'avez pas souhaiter acheter");
+                                //MaConsole.clearCentre();
+                                MaConsole.afficherConsole(Joueurs, JoueurEnCours, Plateau);
+                                MaConsole.afficherCentre();
+                            }
+                            else {
+                                MaConsole.ecrireLigneSansSauver("Vous n'avez pas souhaité construire.");
+                                continuer = false;
+                            }
+                        } while (continuer);
                     }
 
                     // On propose ensuite de commencer à jouer
                     if (!JoueurEnCours.EstEnPrison)
                     {
-                        MaConsole.ecrireLigne("Veuillez appuyer sur Entrée pour lancer les dés.");
-                        MaConsole.lireLigne();
                         Des.lancerDes();
-                        int res1 = Des.de1 + Des.de2;
-                        MaConsole.ecrireLigne("Votre avez obtenu {0} aux dés.", res1);
+                        int resultatsDes = Des.de1 + Des.de2;
 
-                        // on fait avancer le joueur
-                        int position = JoueurEnCours.CaseActuelle;
-                        if (position + res1 < nbCases)
-                        {
-                            CasePlateau destination = Plateau.getCaseFromNum(res1 + position);
-                            JoueurEnCours.deplacerA(destination, true);
-                        }
-                        else
-                        {
-                            CasePlateau destination = Plateau.getCaseFromNum(res1 + position - nbCases);
-                            JoueurEnCours.deplacerA(destination, true);
-                        }
+                        JoueurEnCours.deplacer(resultatsDes, Plateau);
 
                         Console.Clear();
+
                         // on affiche le joueur sur la nouvelle case
-                        MaConsole.afficherConsole(Joueurs, JoueurEnCours);
+                        MaConsole.afficherConsole(Joueurs, JoueurEnCours, Plateau);
 
                         // on réaffiche les infos du centre
                         MaConsole.afficherCentre();
@@ -159,7 +161,7 @@ namespace monopoly
                             // il a peut être une action à effectuer
                             caseTombe.estTombeSur(this);
 
-                            // après avoir effectué son action, il n'a pas bougé
+                            // après avoir effectué son action liée à la case, il n'a pas bougé
                             if (JoueurEnCours.CaseActuelle == caseTombe.Numero)
                                 seDeplace = false;
 
@@ -168,63 +170,23 @@ namespace monopoly
 
                         MaConsole.afficherInfos(JoueurEnCours);
 
-                        MaConsole.ecrireLigne("");
-                        MaConsole.ecrireLigne("Appuyez sur Entrée pour finir votre tour.");
-                        MaConsole.lireLigne();
-
-                        Console.Clear();
-                        MaConsole.clearCentre();
                         //MaConsole.afficherConsole(Joueurs, JoueurEnCours);
                     }
                     // le joueur est en prison !
                     else {
-                        MaConsole.ecrireLigne("Vous êtes en prison !");
-                        MaConsole.lireLigne();
+                        JoueurEnCours.jouerTourPrison(Des);
+                        
                     }
+                    MaConsole.ecrireLigne("");
+                    MaConsole.ecrireLigne("Appuyez sur Entrée pour finir votre tour.");
+                    MaConsole.lireLigne();
+
+                    Console.Clear();
+                    MaConsole.clearCentre();
 
                 }
                 compteurTour++;
                 MaConsole.hauteurLigne = 0;
-            }
-        }
-
-        public void anniversaire()
-        {
-            //MaConsole.ecrireLigne("C'est votre anniversaire !");
-            //MaConsole.ecrireLigne("Tous les joueurs vous doivent 10€ !");
-
-            int somme = 0;
-            foreach (Joueur joueur in Joueurs)
-            {
-                if (joueur != JoueurEnCours)
-                    joueur.perdre(10);
-                somme += 10;
-            }
-
-            MaConsole.ecrireLigne("Vous avez gagné {0}€ !", somme);
-            JoueurEnCours.gagner(somme);
-        }
-
-        public void payerOuTirer()
-        {
-            MaConsole.ecrireLigne("Que choisissez vous de faire ?");
-            MaConsole.ecrireLigne("1 pour payer 10€ ; 2 pour tirer une carte Chance");
-            String rep = MaConsole.lireLigne();
-
-            if (rep == "1")
-            {
-                MaConsole.ecrireLigne("Vous perdez 10€.");
-            }
-            else if (rep == "2")
-            {
-                CartePioche c = CartesChance.piocher();
-                MaConsole.ecrireLigne("Vous piochez la carte :");
-                MaConsole.ecrireLigne(c.Description);
-                c.Action.executer(null);
-            }
-            else
-            {
-                MaConsole.ecrireLigne("erreur de saisie");
             }
         }
 
@@ -234,10 +196,21 @@ namespace monopoly
             for (int i = 0; i < 4; i++)
             {
                 Joueurs.Add(new Joueur("juju" + i));
-                Joueurs[i].deplacerA(Plateau.getCaseFromNum(0), false);
-                //afficherConsole(i);
-                //MaConsole.afficherJoueurSurConsole(Joueurs[i].CaseActuelle, i, 0);
+                Joueurs[i].deplacerA(Plateau.getCaseFromNum(10), false);
+                
             }
+            Joueurs[0].entrerPrison();
+            /*
+            Joueurs[0].ListeProprietes.Add(Plateau.getCaseFromNum(1) as CasePropriete);
+            ((CasePropriete)Plateau.getCaseFromNum(1)).setProprietaire(Joueurs[0]);
+            Joueurs[0].ListeProprietes.Add(Plateau.getCaseFromNum(3) as CasePropriete);
+            ((CasePropriete)Plateau.getCaseFromNum(3)).setProprietaire(Joueurs[0]);
+            Joueurs[0].ListeProprietes.Add(Plateau.getCaseFromNum(6) as CasePropriete);
+            ((CasePropriete)Plateau.getCaseFromNum(6)).setProprietaire(Joueurs[0]);
+            Joueurs[0].ListeProprietes.Add(Plateau.getCaseFromNum(8) as CasePropriete);
+            ((CasePropriete)Plateau.getCaseFromNum(8)).setProprietaire(Joueurs[0]);
+            Joueurs[0].ListeProprietes.Add(Plateau.getCaseFromNum(9) as CasePropriete);
+            ((CasePropriete)Plateau.getCaseFromNum(9)).setProprietaire(Joueurs[0]);*/
         }
 
         private void initJoueurs()
@@ -302,18 +275,6 @@ namespace monopoly
                 MaConsole.ecrireLigne("\n" + finaleTriee[i].Nom + "\n Vous jouez en " + (i + 1) + "ème.");
 
             MaConsole.lireLigne();
-        }
-
-        public void initCouleurs()
-        {
-            Couleur Violet = new Couleur(0, 100, 500);
-            Couleur BleuCiel = new Couleur(1, 50, 450);
-            Couleur Rose = new Couleur(2, 50, 450);
-            Couleur Orange = new Couleur(3, 100, 500);
-            Couleur Rouge = new Couleur(4, 150, 750);
-            Couleur Jaune = new Couleur(5, 150, 750);
-            Couleur Vert = new Couleur(6, 200, 1000);
-            Couleur Bleu = new Couleur(7, 200, 1000);
         }
 
         public void serialiser(XElement racine)
